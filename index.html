@@ -24,53 +24,172 @@
 
     <!-- Home Section -->
     <section id="home" class="home-section">
+        <div class="hero-slider">
+            <div class="slide active" style="background-image: url('Image/Hot coffee/Americano.jpg')"></div>
+            <div class="slide" style="background-image: url('Image/Ice coffee/ice spanish latte.jpg')"></div>
+            <div class="slide" style="background-image: url('Image/Seasonal Special/Ube Coconut Latte.jpg')"></div>
+        </div>
+        <div class="hero-overlay"></div>
         <div class="home-content">
             <h1>Your Daily Dose of Happiness</h1>
             <p>Indulge in our freshly brewed coffee, made from the finest beans and crafted with passion.</p>
             <a href="#main-feature" class="btn-explore">Explore Our Menu</a>
         </div>
+        <button class="slider-arrow prev" id="prevSlide">❮</button>
+        <button class="slider-arrow next" id="nextSlide">❯</button>
+        <div class="slider-dots" id="sliderDots"></div>
     </section>
 
     <!-- Main Feature Section -->
     <section id="main-feature" class="main-feature-section">
         <h2>Main Feature</h2>
+        <p class="subtitle">Crafted fresh daily for coffee lovers</p>
+        <!-- Category Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-btn active" data-category="all">All</button>
+            <button class="filter-btn" data-category="hot">Hot Coffee</button>
+            <button class="filter-btn" data-category="iced">Iced Drinks</button>
+            <button class="filter-btn" data-category="pastries">Pastries</button>
+            <button class="filter-btn" data-category="seasonal">Seasonal Specials</button>
+        </div>
         <div class="products-grid">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x200?text=Cappuccino" alt="Cappuccino">
-                <h3>Cappuccino</h3>
-                <p>Espresso with steamed milk foam</p>
-                <p class="price">$4.50</p>
+            <!-- Hot Coffee Staples -->
+            <div class="product-card" data-category="hot">
+                <img src="Image/Hot coffee/Americano.jpg" alt="Americano">
+                <h3>Americano</h3>
+                <p>Rich espresso diluted with hot water for a smooth, bold cup.</p>
+                <p class="price">₱120.00</p>
+                <a href="customize.html?item=Americano&price=120.00" class="btn-order">Order Now</a>
             </div>
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x200?text=Latte" alt="Latte">
-                <h3>Latte</h3>
-                <p>Espresso with steamed milk</p>
-                <p class="price">$4.00</p>
+            <div class="product-card" data-category="hot">
+                <img src="Image/Hot coffee/Spanish Latte.jpg" alt="Spanish Latte">
+                <h3>Spanish Latte</h3>
+                <p>Espresso combined with steamed milk and sweet condensed milk.</p>
+                <p class="price">₱150.00</p>
+                <a href="customize.html?item=Spanish+Latte&price=150.00" class="btn-order">Order Now</a>
             </div>
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x200?text=Espresso" alt="Espresso">
-                <h3>Espresso</h3>
-                <p>Rich and strong coffee shot</p>
-                <p class="price">$3.50</p>
+            <div class="product-card" data-category="hot">
+                <img src="Image/Hot coffee/Caramel macchiato.jpg" alt="Caramel Macchiato">
+                <h3>Caramel Macchiato</h3>
+                <p>Fresh espresso layered over steamed milk, vanilla syrup, and caramel drizzle.</p>
+                <p class="price">₱160.00</p>
+                <a href="customize.html?item=Caramel+Macchiato&price=160.00" class="btn-order">Order Now</a>
             </div>
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x200?text=Mocha" alt="Mocha">
-                <h3>Mocha</h3>
-                <p>Espresso with chocolate and steamed milk</p>
-                <p class="price">$5.00</p>
+            <div class="product-card" data-category="hot">
+                <img src="Image/Hot coffee/flat white.jpg" alt="Flat White">
+                <h3>Flat White</h3>
+                <p>Double espresso shot poured over velvety microfoam milk.</p>
+                <p class="price">₱145.00</p>
+                <a href="customize.html?item=Flat+White&price=145.00" class="btn-order">Order Now</a>
+            </div>
+            <!-- Iced Drinks -->
+            <div class="product-card" data-category="iced">
+                <img src="Image/Ice coffee/ice spanish latte.jpg" alt="Iced Spanish Latte">
+                <h3>Iced Spanish Latte</h3>
+                <p>Espresso with cold milk, condensed milk, and ice.</p>
+                <p class="price">₱160.00</p>
+                <a href="customize.html?item=Iced+Spanish+Latte&price=160.00" class="btn-order">Order Now</a>
+            </div>
+            <div class="product-card" data-category="iced">
+                <img src="Image/Ice coffee/Iced Caramel Macchiato.jpg" alt="Iced Caramel Macchiato">
+                <h3>Iced Caramel Macchiato</h3>
+                <p>Cold espresso and milk layered over ice with rich caramel drip.</p>
+                <p class="price">₱165.00</p>
+                <a href="customize.html?item=Iced+Caramel+Macchiato&price=165.00" class="btn-order">Order Now</a>
+            </div>
+            <div class="product-card" data-category="iced">
+                <img src="Image/Ice coffee/Iced Salted Caramel Cold Brew.jpg" alt="Iced Salted Caramel Cold Brew">
+                <h3>Iced Salted Caramel Cold Brew</h3>
+                <p>Smooth 12-hour cold brew topped with salted caramel cream foam.</p>
+                <p class="price">₱170.00</p>
+                <a href="customize.html?item=Iced+Salted+Caramel+Cold+Brew&price=170.00" class="btn-order">Order Now</a>
+            </div>
+            <div class="product-card" data-category="iced">
+                <img src="Image/Ice coffee/Iced Matcha Espresso Latte.jpg" alt="Iced Matcha Espresso Latte">
+                <h3>Iced Matcha Espresso Latte</h3>
+                <p>Layered drink with premium Japanese matcha, milk, and espresso float.</p>
+                <p class="price">₱175.00</p>
+                <a href="customize.html?item=Iced+Matcha+Espresso+Latte&price=175.00" class="btn-order">Order Now</a>
+            </div>
+            <!-- Non-Coffee Options -->
+            <div class="product-card" data-category="iced">
+                <img src="Image/Ice coffee/Iced Chocolate.jpg" alt="Iced Chocolate">
+                <h3>Iced Chocolate</h3>
+                <p>Rich dark chocolate sauce mixed with fresh cold milk and ice.</p>
+                <p class="price">₱140.00</p>
+                <a href="customize.html?item=Iced+Chocolate&price=140.00" class="btn-order">Order Now</a>
+            </div>
+            <div class="product-card" data-category="hot">
+                <img src="https://via.placeholder.com/300x200?text=Matcha+Green+Tea+Latte" alt="Matcha Green Tea Latte">
+                <h3>Matcha Green Tea Latte</h3>
+                <p>Pure ceremonial matcha whisked with steamed or cold milk.</p>
+                <p class="price">₱155.00</p>
+                <a href="customize.html?item=Matcha+Green+Tea+Latte&price=155.00" class="btn-order">Order Now</a>
+            </div>
+            <!-- Pastries & Snacks -->
+            <div class="product-card" data-category="pastries">
+                <img src="Image/Pastries/Butter Croissant.jpg" alt="Butter Croissant">
+                <h3>Butter Croissant</h3>
+                <p>Flaky, golden, baked butter pastry.</p>
+                <p class="price">₱95.00</p>
+                <a href="customize.html?item=Butter+Croissant&price=95.00" class="btn-order">Order Now</a>
+            </div>
+            <div class="product-card" data-category="pastries">
+                <img src="Image/Pastries/Chocolate Chip Cookie.jpg" alt="Chocolate Chip Cookie">
+                <h3>Chocolate Chip Cookie</h3>
+                <p>Soft-baked chunky chocolate chip cookie.</p>
+                <p class="price">₱85.00</p>
+                <a href="customize.html?item=Chocolate+Chip+Cookie&price=85.00" class="btn-order">Order Now</a>
+            </div>
+            <!-- Seasonal / Local Specials -->
+            <div class="product-card" data-category="seasonal">
+                <img src="Image/Seasonal Special/Ube Coconut Latte.jpg" alt="Ube Coconut Latte">
+                <h3>Ube Coconut Latte</h3>
+                <p>Espresso mixed with rich purple yam (ube) milk and coconut cream.</p>
+                <p class="price">₱170.00</p>
+                <a href="customize.html?item=Ube+Coconut+Latte&price=170.00" class="btn-order">Order Now</a>
+            </div>
+            <div class="product-card" data-category="seasonal">
+                <img src="Image/Seasonal Special/Tablea Mocha.jpg" alt="Tablea Mocha">
+                <h3>Tablea Mocha</h3>
+                <p>Espresso brewed with traditional Philippine roasted cacao tablea.</p>
+                <p class="price">₱165.00</p>
+                <a href="customize.html?item=Tablea+Mocha&price=165.00" class="btn-order">Order Now</a>
             </div>
         </div>
     </section>
+
+    <!-- Floating Cart Icon -->
+    <div id="floatingCart" class="floating-cart">
+        <a href="cart.html" class="cart-link">
+            <span class="cart-icon">🛒</span>
+            <span id="cartCount" class="cart-badge">0</span>
+        </a>
+    </div>
 
     <!-- About Section -->
     <section id="about" class="about-section">
         <h2>About Us</h2>
         <div class="about-content">
-            <img src="https://via.placeholder.com/400x300?text=Brew+Haven+Interior" alt="Brew Haven Interior">
-            <div class="about-text">
-                <h3>Our Story</h3>
-                <p>At Brew Haven, we're passionate about serving the perfect cup of coffee. Our journey began with a love for quality beans and a desire to create a warm, welcoming space for coffee lovers.</p>
-                <p>We source our beans from sustainable farms and roast them in-house to ensure every cup is fresh and flavorful. Our baristas are trained to craft each drink with care, making your coffee experience truly special.</p>
+            <div class="about-image">
+                <img src="Image/Hot coffee/Americano.jpg" alt="Brew Haven Interior">
+            </div>
+            <div class="about-highlights">
+                <div class="highlight-card">
+                    <div class="highlight-icon">☕</div>
+                    <h3>Locally Sourced Beans</h3>
+                    <p>We partner with local farmers to bring you the freshest, ethically sourced coffee beans.</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">🫖</div>
+                    <h3>Handcrafted Brews</h3>
+                    <p>Each cup is carefully crafted by our skilled baristas with passion and precision.</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">🏠</div>
+                    <h3>Cozy Ambiance</h3>
+                    <p>Relax in our warm, inviting space designed for comfort and connection.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -87,10 +206,11 @@
                 <h3>Opening Hours</h3>
                 <p>Monday - Friday: 6:00 AM - 8:00 PM</p>
                 <p>Saturday - Sunday: 7:00 AM - 9:00 PM</p>
+                <div id="statusBadge" class="status-badge closed">Closed</div>
             </div>
             <div class="contact-form">
                 <h3>Send Us a Message</h3>
-                <form>
+                <form id="contactForm">
                     <input type="text" placeholder="Your Name" required>
                     <input type="email" placeholder="Your Email" required>
                     <textarea placeholder="Your Message" rows="5" required></textarea>
@@ -100,9 +220,14 @@
         </div>
     </section>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Thanks for reaching out! We'll reply shortly.</div>
+
     <!-- Footer -->
     <footer>
         <p>&copy; 2023 Brew Haven Coffee Shop. All rights reserved.</p>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>

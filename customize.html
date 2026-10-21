@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customize Your Drink - Brew Haven</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://via.placeholder.com/40x40?text=☕" alt="Brew Haven Logo">
+            <span>Brew Haven</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#main-feature">Main Feature</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Customization Section -->
+    <section class="customize-section">
+        <div class="customize-container">
+            <div class="card-header">
+                <a href="index.html#main-feature" class="btn-back">← Back to Menu</a>
+            </div>
+            <h2>Customize Your Drink</h2>
+            <p id="itemTitle">Select your preferences</p>
+            <form id="customizeForm">
+                <div class="form-group">
+                    <label for="size">Size:</label>
+                    <select id="size" name="size" required>
+                        <option value="small">Small</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="milk">Milk Type:</label>
+                    <select id="milk" name="milk" required>
+                        <option value="whole">Whole Milk</option>
+                        <option value="oat">Oat Milk</option>
+                        <option value="almond">Almond Milk</option>
+                        <option value="skim">Skim Milk</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sugar">Sugar Level:</label>
+                    <input type="range" id="sugar" name="sugar" min="0" max="4" value="2">
+                    <span id="sugarValue">2</span>
+                </div>
+                <div class="form-group">
+                    <label>Price:</label>
+                    <span id="priceDisplay">₱4.50</span>
+                </div>
+                <button type="submit" class="btn-submit">Add to Cart</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Item added to cart!</div>
+
+    <script src="customize.js"></script>
+</body>
+</html>

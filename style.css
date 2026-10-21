@@ -281,8 +281,8 @@ img {
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
 }
 
 .product-card {
@@ -294,6 +294,7 @@ img {
     transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
+    height: 100%;
     justify-content: space-between;
 }
 
@@ -303,16 +304,17 @@ img {
 }
 
 .product-card img {
-    height: 200px;
+    height: 320px;
     object-fit: cover;
+    object-position: center;
     width: 100%;
-    background-color: #e0e0e0;
-    color: #888;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: transform 0.3s ease;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
 }
 
 .product-card h3 {
@@ -724,6 +726,22 @@ footer {
 }
 
 /* Responsive adjustments for new elements */
+.cart-badge.pop {
+    animation: badgePop 0.3s ease;
+}
+
+@keyframes badgePop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 @media (max-width: 768px) {
     .filter-tabs {
         gap: 0.5rem;
@@ -758,6 +776,8 @@ footer {
     text-decoration: none;
     font-weight: 600;
     outline: none;
+    margin-top: auto;
+    width: calc(100% - 2rem);
 }
 
 .btn-order:hover {
@@ -808,20 +828,31 @@ footer {
     font-size: 1.5rem;
 }
 
-.cart-badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: #e74c3c;
-    color: white;
-    border-radius: 50%;
-    width: 22px;
-    height: 22px;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
+.cart-badge, .cart-count {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  
+  /* Dimensions & Shape */
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  
+  /* Typography */
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  color: #ffffff;
+  background-color: #e74c3c;
+  
+  /* Positioning */
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 /* Cart Page Styles */

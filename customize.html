@@ -32,38 +32,46 @@
             <p id="itemTitle">Select your preferences</p>
             <form id="customizeForm">
                 <div class="form-group">
-                    <label for="size">Size:</label>
-                    <select id="size" name="size" required>
-                        <option value="small">Small</option>
-                        <option value="medium" selected>Medium</option>
-                        <option value="large">Large</option>
+                    <label for="size-select">Size:</label>
+                    <select id="size-select" name="size" required>
+                        <option value="Small">Small</option>
+                        <option value="Medium" selected>Medium</option>
+                        <option value="Large">Large</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="milk">Milk Type:</label>
-                    <select id="milk" name="milk" required>
-                        <option value="whole">Whole Milk</option>
-                        <option value="oat">Oat Milk</option>
-                        <option value="almond">Almond Milk</option>
-                        <option value="skim">Skim Milk</option>
+                    <label for="milk-select">Milk Type:</label>
+                    <select id="milk-select" name="milk" required>
+                        <option value="Whole Milk">Whole Milk</option>
+                        <option value="Oat Milk">Oat Milk</option>
+                        <option value="Almond Milk">Almond Milk</option>
+                        <option value="Skim Milk">Skim Milk</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="sugar">Sugar Level:</label>
-                    <input type="range" id="sugar" name="sugar" min="0" max="4" value="2">
+                    <label for="sugar-slider">Sugar Level:</label>
+                    <input type="range" id="sugar-slider" name="sugar" min="0" max="4" value="2">
                     <span id="sugarValue">2</span>
                 </div>
                 <div class="form-group">
                     <label>Price:</label>
-                    <span id="priceDisplay">₱4.50</span>
+                    <span id="price-display">₱140.00</span>
                 </div>
-                <button type="submit" class="btn-submit">Add to Cart</button>
+                <button type="button" id="add-to-cart-btn" onclick="addToCart()" class="btn-submit">Add to Cart</button>
             </form>
         </div>
     </section>
 
     <!-- Toast Notification -->
     <div id="toast" class="toast">Item added to cart!</div>
+
+    <!-- Floating Cart Icon -->
+    <div id="floatingCart" class="floating-cart">
+        <a href="cart.html" class="cart-link">
+            <span class="cart-icon">🛒</span>
+            <span id="cartCount" class="cart-badge">0</span>
+        </a>
+    </div>
 
     <script src="customize.js"></script>
 </body>

@@ -1,95 +1,116 @@
-// customize.js - Handles drink customization page
+// Global Cart State Preservation
+window.cart = window.cart || [];
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Get item from URL query parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const itemName = urlParams.get('item') || 'Coffee';
-    const basePrice = parseFloat(urlParams.get('price')) || 4.50;
+// DOM elements
+let sizeSelect, milkSelect, sugarSlider, priceDisplay, itemTitle;
 
-    // Update title
-    document.getElementById('itemTitle').textContent = `Customize Your ${itemName}`;
+// Price add-ons
+const sizeAddons = {
+    'Small': 0,
+    'Medium': 20,
+    'Large': 35
+};
 
-    // Price calculation
-    const sizeSelect = document.getElementById('size');
-    const milkSelect = document.getElementById('milk');
-    const sugarSlider = document.getElementById('sugar');
-    const sugarValue = document.getElementById('sugarValue');
-    const priceDisplay = document.getElementById('priceDisplay');
+const milkAddons = {
+    'Whole Milk': 0,
+    'Oat Milk': 30,
+    'Almond Milk': 30,
+    'Skim Milk': 0
+};
 
-    // Size price multipliers
-    const sizeAddons = {
-        small: 0,
-        medium: 20,
-        large: 35
-    };
+let basePrice = 140.00;
 
-    // Milk price add-ons
-    const milkAddons = {
-        whole: 0,
-        oat: 30,
-        almond: 30,
-        skim: 0
-    };
-
-    function updatePrice() {
-        const size = sizeSelect.value;
-        const milk = milkSelect.value;
-        const addonSize = sizeAddons[size];
-        const addonMilk = milkAddons[milk];
-        const finalPrice = (basePrice + addonSize + addonMilk).toFixed(2);
-        priceDisplay.textContent = `₱${finalPrice}`;
-        return finalPrice;
-    }
-
-    // Update sugar value display
-    sugarSlider.addEventListener('input', () => {
-        sugarValue.textContent = sugarSlider.value;
+// 2. Function to update the red floating cart badge count
+function updateCartBadge() {
+    const totalCount = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    const badgeElements = document.querySelectorAll('#cart-badge, .cart-badge, .cart-count');
+    badgeElements.forEach(badge => {
+        badge.textContent = totalCount.toString();
+        badge.style.display = 'inline-block';
+        badge.classList.remove('pop');
+        void badge.offsetWidth;
+        badge.classList.add('pop');
     });
+}
 
-    // Update price on size/milk change
-    sizeSelect.addEventListener('change', updatePrice);
-    milkSelect.addEventListener('change', updatePrice);
+// 1. Function called when clicking "Add to Cart"
+function addToCart() {
+    const size = sizeSelect?.value || 'Medium';
+    const milk = milkSelect?.value || 'Whole Milk';
+    const sugar = sugarSlider?.value || '2';
+    const priceText = priceDisplay?.textContent || '₱140.00';
+    const numericPrice = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 140;
 
-    // Initial price
-    updatePrice();
+    const orderItem = {
+        id: Date.now(),
+        name: 'Customized Drink',
+        size: size,
+        milk: milk,
+        sugar: sugar,
+        price: numericPrice,
+        quantity: 1
+    };
 
-    // Handle form submission (Add to Cart)
-    const form = document.getElementById('customizeForm');
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
+    window.cart.push(orderItem);
+    localStorage.setItem('brewHavenCart', JSON.stringify(window.cart));
 
-        const size = sizeSelect.value;
-        const milk = milkSelect.value;
-        const sugar = sugarSlider.value;
-        const price = updatePrice();
+    updateCartBadge();
 
-        // Create cart item object
-        const cartItem = {
-            id: Date.now(),
-            name: itemName,
-            size: size,
-            milk: milk,
-            sugar: sugar,
-            price: parseFloat(price),
-            quantity: 1
-        };
+    console.log('Item added to cart:', orderItem);
 
-        // Get existing cart from localStorage
-        let cart = JSON.parse(localStorage.getItem('brewHavenCart')) || [];
-        cart.push(cartItem);
-        localStorage.setItem('brewHavenCart', JSON.stringify(cart));
-
-        // Show toast
-        const toast = document.getElementById('toast');
+    const toast = document.getElementById('toast');
+    if (toast) {
         toast.textContent = 'Item added to cart!';
         toast.classList.add('show');
         setTimeout(() => {
             toast.classList.remove('show');
         }, 3000);
+    }
 
-        // Redirect to Main Feature section after short delay
-        setTimeout(() => {
-            window.location.href = 'index.html#main-feature';
-        }, 1000);
-    });
+    setTimeout(() => {
+        window.location.href = 'index.html#main-feature';
+    }, 1000);
+}
+
+function updatePrice() {
+    if (!sizeSelect || !milkSelect || !priceDisplay) return;
+    const size = sizeSelect.value;
+    const milk = milkSelect.value;
+    const addonSize = sizeAddons[size] || 0;
+    const addonMilk = milkAddons[milk] || 0;
+    const finalPrice = (basePrice + addonSize + addonMilk).toFixed(2);
+    priceDisplay.textContent = `₱${finalPrice}`;
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    sizeSelect = document.getElementById('size-select');
+    milkSelect = document.getElementById('milk-select');
+    sugarSlider = document.getElementById('sugar-slider');
+    priceDisplay = document.getElementById('price-display');
+    itemTitle = document.getElementById('itemTitle');
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const itemName = urlParams.get('item') || 'Coffee';
+    const itemPrice = parseFloat(urlParams.get('price')) || 140.00;
+    basePrice = itemPrice;
+
+    if (itemTitle) itemTitle.textContent = `Customize Your ${itemName}`;
+    if (priceDisplay) priceDisplay.textContent = `₱${basePrice.toFixed(2)}`;
+
+    if (sizeSelect) sizeSelect.addEventListener('change', updatePrice);
+    if (milkSelect) milkSelect.addEventListener('change', updatePrice);
+
+    updatePrice();
+
+    // Load cart from localStorage
+    window.cart = JSON.parse(localStorage.getItem('brewHavenCart')) || [];
+    updateCartBadge();
+
+    if (sugarSlider) {
+        const sugarValue = document.getElementById('sugarValue');
+        sugarSlider.addEventListener('input', () => {
+            if (sugarValue) sugarValue.textContent = sugarSlider.value;
+        });
+    }
 });

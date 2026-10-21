@@ -125,6 +125,15 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', prevSlide);
     nextBtn.addEventListener('click', nextSlide);
 
+    // Update floating cart badge on load
+    window.cart = JSON.parse(localStorage.getItem('brewHavenCart')) || [];
+    const badgeElements = document.querySelectorAll('#cart-badge, .cart-badge, .cart-count');
+    const totalItems = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    badgeElements.forEach(badge => {
+        badge.textContent = totalItems.toString();
+        badge.style.display = 'inline-block';
+    });
+
     // Start auto-play
     startAutoPlay();
 });

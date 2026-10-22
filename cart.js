@@ -83,11 +83,10 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCartCount();
     }
 
-    // Update totals: remove tax, total = subtotal
+    // Update totals: no tax, total = subtotal
     function updateTotals() {
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         subtotalEl.textContent = `₱${subtotal.toFixed(2)}`;
-        taxEl.textContent = `₱0.00`;
         totalEl.textContent = `₱${subtotal.toFixed(2)}`;
     }
 
@@ -107,18 +106,40 @@ document.addEventListener('DOMContentLoaded', () => {
         emptyMsg.textContent = '';
         emptyMsg.classList.remove('show');
 
-        // Calculate estimated pickup time (current time + 15 minutes)
+        // Get current user
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+        const customerName = currentUser ? currentUser.username : 'Guest';
+
+        // Calculate total (no tax)
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        // Create order object
+        const orderId = 'BH-' + Date.now();
         const now = new Date();
+        const orderTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const order = {
+            orderId: orderId,
+            customerName: customerName,
+            items: cart.map(item => `${item.name} (${item.size}, ${item.milk} milk, sugar: ${item.sugar}) x${item.quantity}`),
+            totalPrice: total,
+            orderTime: orderTime,
+            status: 'Pending'
+        };
+
+        // Save to localStorage allOrders
+        let allOrders = JSON.parse(localStorage.getItem('allOrders')) || [];
+        allOrders.push(order);
+        localStorage.setItem('allOrders', JSON.stringify(allOrders));
+
+        // Calculate estimated pickup time (current time + 15 minutes)
         const pickup = new Date(now.getTime() + 15 * 60000);
         const pickupTimeStr = pickup.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         pickupTimeEl.textContent = pickupTimeStr;
 
         // Build order summary
         let summaryHTML = '<ul>';
-        let total = 0;
         cart.forEach(item => {
             const itemTotal = item.price * item.quantity;
-            total += itemTotal;
             summaryHTML += `<li>${item.name} (${item.size}, ${item.milk} milk, sugar: ${item.sugar}) x${item.quantity} - ₱${itemTotal.toFixed(2)}</li>`;
         });
         summaryHTML += '</ul>';
@@ -132,8 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         orderSummaryEl.appendChild(paymentEl);
 
         // Calculate total paid (no tax)
-        const finalTotal = total;
-        document.getElementById('totalPaid').textContent = `₱${finalTotal.toFixed(2)}`;
+        document.getElementById('totalPaid').textContent = `₱${total.toFixed(2)}`;
 
         // Reset cart
         cart = [];

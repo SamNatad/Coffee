@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Brew Haven Coffee Shop</title>
+    <title>Login - Unknown Coffee Coffee Shop</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Navigation Bar (same as index.html but without login link) -->
     <nav class="navbar">
         <div class="logo">
-            <img src="https://via.placeholder.com/40x40?text=☕" alt="Brew Haven Logo">
-            <span>Brew Haven</span>
+            <svg class="logo-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 8H18V18C18 20.2091 16.2091 22 14 22H6C3.79086 22 2 20.2091 2 18V8Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18 8H20C21.1046 8 22 8.89543 22 10V12C22 13.1046 21.1046 14 20 14H18" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Unknown Coffee</span>
         </div>
         <ul class="nav-links">
             <li><a href="index.html#home">Home</a></li>
@@ -25,25 +31,53 @@
     <!-- Login Section -->
     <section class="login-section">
         <div class="login-content">
-            <h2>Login to Brew Haven</h2>
+            <h2>Login to Unknown Coffee</h2>
             <p>Access your account to save preferences and order history.</p>
-            <form>
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
-                <div class="remember-me">
-                    <input type="checkbox" id="remember">
-                    <label for="remember">Remember Me</label>
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <div class="show-password">
+                    <input type="checkbox" id="showPassword">
+                    <label for="showPassword">Show Password</label>
                 </div>
                 <button type="submit" class="btn-login">Login</button>
             </form>
-            <p>Don't have an account? <a href="#">Sign up</a></p>
-            <p><small>Note: This is a frontend demo. A functional login system requires backend authentication.</small></p>
+            <p id="errorMsg" style="color: red; display: none;">Invalid username or password. Please try again.</p>
+            <p><small>By logging in, you agree to our Terms of Service and Privacy Policy.</small></p>
         </div>
     </section>
 
+            <script>
+                document.getElementById('showPassword').addEventListener('change', function() {
+                    const passwordInput = document.getElementById('password');
+                    if (this.checked) {
+                        passwordInput.type = 'text';
+                    } else {
+                        passwordInput.type = 'password';
+                    }
+                });
+
+                document.getElementById('loginForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    const errorMsg = document.getElementById('errorMsg');
+
+                    if (username === 'user123' && password === '12345') {
+                        sessionStorage.setItem('currentUser', JSON.stringify({ username: 'user123', role: 'customer' }));
+                        window.location.href = 'index.html#main-feature';
+                    } else if (username === 'admin123' && password === '12345') {
+                sessionStorage.setItem('currentUser', JSON.stringify({ username: 'admin123', role: 'admin' }));
+                window.location.href = 'admin.html';
+                    } else {
+                        errorMsg.style.display = 'block';
+                    }
+                });
+            </script>
+
     <!-- Footer -->
     <footer>
-        <p>&copy; 2023 Brew Haven Coffee Shop. All rights reserved.</p>
+        <p>&copy; 2023 Unknown Coffee Coffee Shop. All rights reserved.</p>
     </footer>
 </body>
 </html>

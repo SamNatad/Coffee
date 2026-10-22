@@ -3,22 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Order - Brew Haven</title>
+    <title>Your Order - Unknown Coffee</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="logo">
-            <img src="https://via.placeholder.com/40x40?text=☕" alt="Brew Haven Logo">
-            <span>Brew Haven</span>
+            <svg class="logo-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 8H18V18C18 20.2091 16.2091 22 14 22H6C3.79086 22 2 20.2091 2 18V8Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18 8H20C21.1046 8 22 8.89543 22 10V12C22 13.1046 21.1046 14 20 14H18" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Unknown Coffee</span>
         </div>
         <ul class="nav-links">
             <li><a href="index.html#home">Home</a></li>
             <li><a href="index.html#main-feature">Main Feature</a></li>
             <li><a href="index.html#about">About</a></li>
             <li><a href="index.html#contact">Contact</a></li>
-            <li><a href="login.html">Login</a></li>
+            <li><a href="cart.html" id="nav-cart-btn">Cart</a></li>
+            <li><a href="#" id="nav-order-status-btn">Order Status</a></li>
+            <li><a href="login.html" id="nav-login-btn">Login</a></li>
         </ul>
     </nav>
 
@@ -30,32 +38,20 @@
             <div id="cartItems" class="cart-items">
                 <!-- Cart items will be rendered here by JavaScript -->
             </div>
-            <div class="cart-summary">
-                <div class="summary-row">
-                    <span>Subtotal:</span>
-                    <span id="subtotal">₱0.00</span>
-                </div>
-                <div class="summary-row">
-                    <span>Tax (8%):</span>
-                    <span id="tax">₱0.00</span>
-                </div>
-                <div class="summary-row total">
-                    <span>Total:</span>
-                    <span id="total">₱0.00</span>
-                </div>
-                <div class="checkout-row">
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">₱0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="total">₱0.00</span>
+                    </div>
                     <button id="checkoutBtn" class="btn-submit">Finalize Order / Checkout</button>
                     <span id="emptyCartMsg" class="empty-cart-msg"></span>
                 </div>
-            </div>
         </div>
     </section>
-
-    <!-- Floating Cart Icon (persistent) -->
-    <div id="floatingCart" class="floating-cart">
-        <span class="cart-icon">🛒</span>
-        <span id="cartCount" class="cart-badge">0</span>
-    </div>
 
     <!-- Checkout Modal -->
     <div id="checkoutModal" class="modal-overlay">
@@ -80,5 +76,42 @@
     </div>
 
     <script src="cart.js"></script>
+    <script>
+        function updateNavAuthUI() {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            const loginNavBtn = document.getElementById('nav-login-btn');
+
+            if (loginNavBtn) {
+                if (currentUser && currentUser.username) {
+                    loginNavBtn.textContent = `Logout (${currentUser.username})`;
+                    loginNavBtn.href = '#';
+                    loginNavBtn.onclick = function(e) {
+                        e.preventDefault();
+                        logoutUser();
+                    };
+                } else {
+                    loginNavBtn.textContent = 'Login';
+                    loginNavBtn.href = 'login.html';
+                    loginNavBtn.onclick = null;
+                }
+            }
+            // Always show order status button
+            const orderStatusBtn = document.getElementById('nav-order-status-btn');
+            if (orderStatusBtn) {
+                orderStatusBtn.style.display = 'inline-block';
+            }
+        }
+
+        function logoutUser() {
+            sessionStorage.removeItem('currentUser');
+            window.currentUser = null;
+            updateNavAuthUI();
+            window.location.href = 'index.html#home';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavAuthUI();
+        });
+    </script>
 </body>
 </html>

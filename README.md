@@ -1,4 +1,4 @@
-# Brew Haven Coffee Shop
+# Unknown Coffee Coffee Shop
 
 A modern, responsive coffee shop website built with HTML5 and CSS3.
 
@@ -62,3 +62,12 @@ brew-haven-coffee/
 ## Credits
 
 Design and development by [Your Name] or leave as is for a template.
+
+## Login User
+User Account
+Username: user123
+Password: 12345
+## Login Admin
+Admin Account
+Username: admin123
+Password: 12345

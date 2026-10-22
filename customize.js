@@ -1,5 +1,5 @@
-// Global Cart State Preservation
-window.cart = window.cart || [];
+// 1. Ensure global cart array
+if (!window.cart) window.cart = [];
 
 // DOM elements
 let sizeSelect, milkSelect, sugarSlider, priceDisplay, itemTitle;
@@ -20,30 +20,34 @@ const milkAddons = {
 
 let basePrice = 140.00;
 
-// 2. Function to update the red floating cart badge count
-function updateCartBadge() {
+// 2. Direct function to sync the visible badge counter
+function syncCartBadge() {
     const totalCount = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-    const badgeElements = document.querySelectorAll('#cart-badge, .cart-badge, .cart-count');
-    badgeElements.forEach(badge => {
+
+    // Target ALL badge elements on the page simultaneously
+    const badges = document.querySelectorAll('#global-cart-badge, .cart-badge, .cart-count, span[id*="badge"]');
+
+    badges.forEach(badge => {
+        badge.innerHTML = totalCount.toString();
         badge.textContent = totalCount.toString();
-        badge.style.display = 'inline-block';
-        badge.classList.remove('pop');
-        void badge.offsetWidth;
-        badge.classList.add('pop');
     });
+
+    console.log('Cart Badge Updated to:', totalCount);
 }
 
-// 1. Function called when clicking "Add to Cart"
+// 3. Add to Cart function
 function addToCart() {
-    const size = sizeSelect?.value || 'Medium';
-    const milk = milkSelect?.value || 'Whole Milk';
-    const sugar = sugarSlider?.value || '2';
-    const priceText = priceDisplay?.textContent || '₱140.00';
+    // Get values from customization form
+    const size = document.getElementById('size-select')?.value || 'Medium';
+    const milk = document.getElementById('milk-select')?.value || 'Whole Milk';
+    const sugar = document.getElementById('sugar-slider')?.value || '2';
+    const priceText = document.getElementById('price-display')?.textContent || '₱140.00';
+
     const numericPrice = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 140;
 
-    const orderItem = {
+    const newItem = {
         id: Date.now(),
-        name: 'Customized Drink',
+        name: currentItemName,
         size: size,
         milk: milk,
         sugar: sugar,
@@ -51,13 +55,19 @@ function addToCart() {
         quantity: 1
     };
 
-    window.cart.push(orderItem);
+    // Add to global cart array
+    window.cart.push(newItem);
+
+    // Save to localStorage
     localStorage.setItem('brewHavenCart', JSON.stringify(window.cart));
 
-    updateCartBadge();
+    // FORCE IMMEDIATE BADGE UPDATE
+    syncCartBadge();
 
-    console.log('Item added to cart:', orderItem);
+    // Console debugging
+    console.log('Item added to cart:', newItem);
 
+    // Show toast
     const toast = document.getElementById('toast');
     if (toast) {
         toast.textContent = 'Item added to cart!';
@@ -67,9 +77,13 @@ function addToCart() {
         }, 3000);
     }
 
+    // Return to main menu view
     setTimeout(() => {
         window.location.href = 'index.html#main-feature';
     }, 1000);
+
+    // Run sync again after view transition just in case
+    setTimeout(syncCartBadge, 50);
 }
 
 function updatePrice() {
@@ -92,6 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const urlParams = new URLSearchParams(window.location.search);
     const itemName = urlParams.get('item') || 'Coffee';
+    console.log('Item name from URL:', itemName, 'Full search:', window.location.search);
+    currentItemName = itemName;
     const itemPrice = parseFloat(urlParams.get('price')) || 140.00;
     basePrice = itemPrice;
 
@@ -105,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load cart from localStorage
     window.cart = JSON.parse(localStorage.getItem('brewHavenCart')) || [];
-    updateCartBadge();
+    syncCartBadge();
 
     if (sugarSlider) {
         const sugarValue = document.getElementById('sugarValue');

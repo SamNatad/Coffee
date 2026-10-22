@@ -1,13 +1,58 @@
-// Filter tabs functionality
+// Global slider functions
+let currentSlide = 0;
+let slides = [];
+let dots = [];
+let autoPlayInterval;
+
+function goToSlide(index) {
+    if (slides.length === 0) return;
+    slides[currentSlide].classList.remove('active');
+    if (dots[currentSlide]) dots[currentSlide].classList.remove('active');
+    currentSlide = index;
+    slides[currentSlide].classList.add('active');
+    if (dots[currentSlide]) dots[currentSlide].classList.add('active');
+    resetAutoPlay();
+}
+
+function nextSlide() {
+    if (slides.length === 0) return;
+    const next = (currentSlide + 1) % slides.length;
+    goToSlide(next);
+}
+
+function prevSlide() {
+    if (slides.length === 0) return;
+    const prev = (currentSlide - 1 + slides.length) % slides.length;
+    goToSlide(prev);
+}
+
+function startAutoPlay() {
+    autoPlayInterval = setInterval(nextSlide, 5000);
+}
+
+function resetAutoPlay() {
+    clearInterval(autoPlayInterval);
+    startAutoPlay();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Update floating cart badge on load (FIRST)
+    window.cart = JSON.parse(localStorage.getItem('brewHavenCart')) || [];
+    const badges = document.querySelectorAll('#global-cart-badge, .cart-badge, .cart-count, span[id*="badge"]');
+    const totalItems = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    badges.forEach(badge => {
+        badge.innerHTML = totalItems.toString();
+        badge.textContent = totalItems.toString();
+    });
+    console.log('Cart Badge Updated to:', totalItems);
+
+    // Filter tabs functionality
     const filterButtons = document.querySelectorAll('.filter-btn');
     const productCards = document.querySelectorAll('.product-card');
 
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Remove active class from all buttons
             filterButtons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
             button.classList.add('active');
 
             const category = button.getAttribute('data-category');
@@ -25,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toast notification
     const toast = document.getElementById('toast');
     function showToast(message) {
+        if (!toast) return;
         toast.textContent = message;
         toast.classList.add('show');
         setTimeout(() => {
@@ -45,19 +91,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Live open/closed status
     function updateStatus() {
         const now = new Date();
-        const day = now.getDay(); // 0 = Sunday, 6 = Saturday
+        const day = now.getDay();
         const hour = now.getHours();
         const minute = now.getMinutes();
         const time = hour + minute / 60;
 
         let isOpen = false;
 
-        // Monday-Friday: 6 AM - 8 PM (6 - 20)
         if (day >= 1 && day <= 5) {
             isOpen = time >= 6 && time < 20;
-        }
-        // Saturday-Sunday: 7 AM - 9 PM (7 - 21)
-        else {
+        } else {
             isOpen = time >= 7 && time < 21;
         }
 
@@ -75,65 +118,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    updateStatus();
+    setInterval(updateStatus, 60000);
+
     // Hero Slider
-    const slides = document.querySelectorAll('.slide');
+    slides = document.querySelectorAll('.slide');
     const prevBtn = document.getElementById('prevSlide');
     const nextBtn = document.getElementById('nextSlide');
     const dotsContainer = document.getElementById('sliderDots');
-    let currentSlide = 0;
-    let autoPlayInterval;
 
     // Create dots
-    slides.forEach((_, index) => {
-        const dot = document.createElement('div');
-        dot.classList.add('dot');
-        if (index === 0) dot.classList.add('active');
-        dot.addEventListener('click', () => goToSlide(index));
-        dotsContainer.appendChild(dot);
-    });
-
-    const dots = document.querySelectorAll('.dot');
-
-    function goToSlide(index) {
-        slides[currentSlide].classList.remove('active');
-        dots[currentSlide].classList.remove('active');
-        currentSlide = index;
-        slides[currentSlide].classList.add('active');
-        dots[currentSlide].classList.add('active');
-        resetAutoPlay();
+    if (dotsContainer) {
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
+        });
     }
 
-    function nextSlide() {
-        const next = (currentSlide + 1) % slides.length;
-        goToSlide(next);
-    }
+    dots = document.querySelectorAll('.dot');
 
-    function prevSlide() {
-        const prev = (currentSlide - 1 + slides.length) % slides.length;
-        goToSlide(prev);
-    }
-
-    function startAutoPlay() {
-        autoPlayInterval = setInterval(nextSlide, 5000);
-    }
-
-    function resetAutoPlay() {
-        clearInterval(autoPlayInterval);
-        startAutoPlay();
-    }
-
-    prevBtn.addEventListener('click', prevSlide);
-    nextBtn.addEventListener('click', nextSlide);
-
-    // Update floating cart badge on load
-    window.cart = JSON.parse(localStorage.getItem('brewHavenCart')) || [];
-    const badgeElements = document.querySelectorAll('#cart-badge, .cart-badge, .cart-count');
-    const totalItems = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-    badgeElements.forEach(badge => {
-        badge.textContent = totalItems.toString();
-        badge.style.display = 'inline-block';
-    });
+    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
 
     // Start auto-play
-    startAutoPlay();
+    if (slides.length > 0) {
+        startAutoPlay();
+    }
 });

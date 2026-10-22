@@ -3,22 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brew Haven Coffee Shop</title>
+    <title>Unknown Coffee Coffee Shop</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="logo">
-            <img src="https://via.placeholder.com/40x40?text=☕" alt="Brew Haven Logo">
-            <span>Brew Haven</span>
+            <svg class="logo-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 8H18V18C18 20.2091 16.2091 22 14 22H6C3.79086 22 2 20.2091 2 18V8Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18 8H20C21.1046 8 22 8.89543 22 10V12C22 13.1046 21.1046 14 20 14H18" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Unknown Coffee</span>
         </div>
         <ul class="nav-links">
             <li><a href="#home" class="active">Home</a></li>
             <li><a href="#main-feature">Main Feature</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="login.html">Login</a></li>
+            <li><a href="cart.html" id="nav-cart-btn">Cart</a></li>
+            <li><a href="#" id="nav-order-status-btn">Order Status</a></li>
+            <li><a href="login.html" id="nav-login-btn">Login</a></li>
         </ul>
     </nav>
 
@@ -28,6 +36,9 @@
             <div class="slide active" style="background-image: url('Image/Hot coffee/Americano.jpg')"></div>
             <div class="slide" style="background-image: url('Image/Ice coffee/ice spanish latte.jpg')"></div>
             <div class="slide" style="background-image: url('Image/Seasonal Special/Ube Coconut Latte.jpg')"></div>
+            <div class="slide" style="background-image: url('Image/Hot coffee/Spanish Latte.jpg')"></div>
+            <div class="slide" style="background-image: url('Image/Ice coffee/Iced Caramel Macchiato.jpg')"></div>
+            <div class="slide" style="background-image: url('Image/Pastries/Butter Croissant.jpg')"></div>
         </div>
         <div class="hero-overlay"></div>
         <div class="home-content">
@@ -35,8 +46,8 @@
             <p>Indulge in our freshly brewed coffee, made from the finest beans and crafted with passion.</p>
             <a href="#main-feature" class="btn-explore">Explore Our Menu</a>
         </div>
-        <button class="slider-arrow prev" id="prevSlide">❮</button>
-        <button class="slider-arrow next" id="nextSlide">❯</button>
+        <button class="slider-arrow prev" id="prevSlide" onclick="prevSlide()">❮</button>
+        <button class="slider-arrow next" id="nextSlide" onclick="nextSlide()">❯</button>
         <div class="slider-dots" id="sliderDots"></div>
     </section>
 
@@ -152,20 +163,12 @@
         </div>
     </section>
 
-    <!-- Floating Cart Icon -->
-    <div id="floatingCart" class="floating-cart">
-        <a href="cart.html" class="cart-link">
-            <span class="cart-icon">🛒</span>
-            <span id="cartCount" class="cart-badge">0</span>
-        </a>
-    </div>
-
     <!-- About Section -->
     <section id="about" class="about-section">
         <h2>About Us</h2>
         <div class="about-content">
             <div class="about-image">
-                <img src="Image/Hot coffee/Americano.jpg" alt="Brew Haven Interior">
+                <img src="Image/Hot coffee/Americano.jpg" alt="Unknown Coffee Interior">
             </div>
             <div class="about-highlights">
                 <div class="highlight-card">
@@ -218,9 +221,245 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2023 Brew Haven Coffee Shop. All rights reserved.</p>
+        <p>&copy; 2023 Unknown Coffee Coffee Shop. All rights reserved.</p>
     </footer>
 
+    <!-- Order Status Modal -->
+    <div id="orderStatusModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="success-icon">☕</div>
+                <h3>Order Status</h3>
+            </div>
+            <div class="modal-body">
+                <div id="orderStatusContent">
+                    <p>No active orders.</p>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="closeOrderStatusBtn" class="btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutConfirmModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="lock-icon">🚪</div>
+                <h3>Confirm Logout</h3>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to log out?</p>
+            </div>
+            <div class="modal-actions">
+                <button id="confirmLogoutBtn" class="btn-primary">Yes</button>
+                <button id="cancelLogoutBtn" class="btn-secondary">No</button>
+            </div>
+        </div>
+    </div>
+    <div id="loginRequiredModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="lock-icon">🔒</div>
+                <h3>Login Required</h3>
+            </div>
+            <div class="modal-body">
+                <p>Please log in to your account first before placing an order.</p>
+            </div>
+            <div class="modal-actions">
+                <button id="loginNowBtn" class="btn-primary">Login Now</button>
+                <button id="cancelLoginBtn" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function openCart() {
+            window.location.href = 'cart.html';
+        }
+
+        function checkLogin() {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            if (!currentUser) {
+                const modal = document.getElementById('loginRequiredModal');
+                if (modal) {
+                    modal.classList.add('show');
+                }
+                return false;
+            }
+            return true;
+        }
+        
+        // Modal button handlers
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginNowBtn = document.getElementById('loginNowBtn');
+            const cancelLoginBtn = document.getElementById('cancelLoginBtn');
+            const modal = document.getElementById('loginRequiredModal');
+            
+            if (loginNowBtn) {
+                loginNowBtn.addEventListener('click', () => {
+                    if (modal) modal.classList.remove('show');
+                    window.location.href = 'login.html';
+                });
+            }
+            if (cancelLoginBtn) {
+                cancelLoginBtn.addEventListener('click', () => {
+                    if (modal) modal.classList.remove('show');
+                });
+            }
+            const logoutModal = document.getElementById('logoutConfirmModal');
+            const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
+            const cancelLogoutBtn = document.getElementById('cancelLogoutBtn');
+            
+            if (confirmLogoutBtn) {
+                confirmLogoutBtn.addEventListener('click', () => {
+                    if (logoutModal) logoutModal.classList.remove('show');
+                    sessionStorage.removeItem('currentUser');
+                    window.location.reload();
+                });
+            }
+            if (cancelLogoutBtn) {
+                cancelLogoutBtn.addEventListener('click', () => {
+                    if (logoutModal) logoutModal.classList.remove('show');
+                });
+            }
+            if (logoutModal) {
+                logoutModal.addEventListener('click', (e) => {
+                    if (e.target === logoutModal) {
+                        logoutModal.classList.remove('show');
+                    }
+                });
+            }
+        });
+        
+        function updateNavAuthUI() {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            const loginNavBtn = document.getElementById('nav-login-btn');
+            const orderStatusBtn = document.getElementById('nav-order-status-btn');
+
+            if (loginNavBtn) {
+                if (currentUser && currentUser.username) {
+                    loginNavBtn.textContent = `Logout (${currentUser.username})`;
+                    loginNavBtn.href = '#';
+                    loginNavBtn.onclick = function(e) {
+                        e.preventDefault();
+                        logoutUser();
+                    };
+                } else {
+                    loginNavBtn.textContent = 'Login';
+                    loginNavBtn.href = 'login.html';
+                    loginNavBtn.onclick = null;
+                }
+                // Always show order status button
+                if (orderStatusBtn) {
+                    orderStatusBtn.style.display = 'inline-block';
+                }
+            }
+        }
+
+        function updateOrderStatusButton() {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            const allOrders = JSON.parse(localStorage.getItem('allOrders')) || [];
+            const userOrders = allOrders.filter(o => o.customerName === currentUser.username);
+            const activeOrder = userOrders.find(o => o.status === 'Pending' || o.status === 'Preparing');
+            const btn = document.getElementById('nav-order-status-btn');
+            if (btn) {
+                if (activeOrder) {
+                    const statusText = activeOrder.status === 'Pending' ? 'Order Received' : 'Preparing';
+                    btn.textContent = `Order Status: ${statusText}`;
+                } else {
+                    btn.textContent = 'Order Status';
+                }
+            }
+        }
+
+        function showOrderStatus() {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            const allOrders = JSON.parse(localStorage.getItem('allOrders')) || [];
+            const userOrders = allOrders.filter(o => o.customerName === currentUser.username);
+            const content = document.getElementById('orderStatusContent');
+            if (content) {
+                if (userOrders.length === 0) {
+                    content.innerHTML = '<p>No active orders.</p>';
+                } else {
+                    const latest = userOrders[userOrders.length - 1];
+                    let progress = 0;
+                    if (latest.status === 'Pending') progress = 33;
+                    else if (latest.status === 'Preparing') progress = 66;
+                    else if (latest.status === 'Completed') progress = 100;
+                    content.innerHTML = `
+                        <p><strong>Order #${latest.orderId}</strong></p>
+                        <p>Items: ${latest.items.join(', ')}</p>
+                        <p>Total: ₱${latest.totalPrice.toFixed(2)}</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        <p>Status: ${latest.status}</p>
+                    `;
+                }
+            }
+            const modal = document.getElementById('orderStatusModal');
+            if (modal) modal.classList.add('show');
+        }
+
+        // Poll for order status updates
+        setInterval(() => {
+            updateOrderStatusButton();
+            const modal = document.getElementById('orderStatusModal');
+            if (modal && modal.classList.contains('show')) {
+                showOrderStatus();
+            }
+        }, 3000);
+
+        // Order status button click
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('nav-order-status-btn');
+            if (btn) {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showOrderStatus();
+                });
+            }
+            const closeBtn = document.getElementById('closeOrderStatusBtn');
+            const modal = document.getElementById('orderStatusModal');
+            if (closeBtn && modal) {
+                closeBtn.addEventListener('click', () => {
+                    modal.classList.remove('show');
+                });
+            }
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('show');
+                    }
+                });
+            }
+        });
+
+        function logoutUser() {
+            sessionStorage.removeItem('currentUser');
+            window.currentUser = null;
+            updateNavAuthUI();
+            window.location.href = 'index.html#home';
+        }
+
+        // Update navbar based on login state
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavAuthUI();
+            
+            // Add click listener to all Order Now buttons
+            const orderButtons = document.querySelectorAll('.btn-order');
+            orderButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    if (!checkLogin()) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

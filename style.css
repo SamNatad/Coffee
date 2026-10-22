@@ -59,21 +59,24 @@ img {
 .navbar .logo {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 12px;
 }
 
-.navbar .logo img {
-    width: 40px;
+.navbar .logo .logo-icon {
     height: 40px;
+    width: auto;
+    object-fit: contain;
 }
 
 .navbar .logo span {
     font-size: 1.5rem;
     font-weight: bold;
+    color: var(--white);
 }
 
 .nav-links {
     display: flex;
+    align-items: center;
     gap: 2rem;
 }
 
@@ -502,8 +505,6 @@ img {
     cursor: pointer;
     transition: var(--transition);
     box-shadow: var(--shadow);
-    position: relative;
-    overflow: hidden;
 }
 
 .btn-submit:hover {
@@ -515,22 +516,6 @@ img {
 .btn-submit:active {
     transform: translateY(1px) scale(0.98);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* Shimmer effect on hover */
-.btn-submit::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: var(--transition);
-}
-
-.btn-submit:hover::before {
-    left: 100%;
 }
 
 /* Login Page Styles */
@@ -591,7 +576,7 @@ img {
     transform: translateY(-2px);
 }
 
-.remember-me {
+.show-password {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -742,6 +727,238 @@ footer {
     }
 }
 
+/* Admin Dashboard Styles */
+.admin-dashboard {
+    padding: 2rem 5%;
+    background-color: var(--light-color);
+    min-height: 100vh;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-container h2 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.analytics-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.analytics-card {
+    background-color: var(--white);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e8e0d5;
+    text-align: center;
+}
+
+.analytics-card h3 {
+    color: var(--dark-color);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.analytics-value {
+    color: var(--primary-color);
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.dashboard-section {
+    background-color: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e8e0d5;
+}
+
+.dashboard-section h3 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.order-table, .menu-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-table th, .menu-table th {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.order-table td, .menu-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e8e0d5;
+    color: var(--dark-color);
+}
+
+.order-table tr:hover, .menu-table tr:hover {
+    background-color: var(--light-color);
+}
+
+.status-select {
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: var(--white);
+    cursor: pointer;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+.add-item-form {
+    background-color: var(--light-color);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.add-item-form h4 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.form-row input, .form-row select {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    flex: 1 1 200px;
+}
+
+.form-row button {
+    padding: 0.8rem 1.5rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.form-row button:hover {
+    background-color: var(--accent-color);
+}
+
+.menu-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+#nav-order-status-btn {
+    color: var(--white);
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+#nav-order-status-btn:hover {
+    color: var(--secondary-color);
+}
+
 @media (max-width: 768px) {
     .filter-tabs {
         gap: 0.5rem;
@@ -806,6 +1023,7 @@ footer {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     transition: var(--transition);
+    cursor: pointer;
 }
 
 .floating-cart:hover {
@@ -1191,10 +1409,10 @@ footer {
     margin-bottom: 1.5rem;
 }
 
-.success-icon {
+.lock-icon {
     width: 60px;
     height: 60px;
-    background-color: #4CAF50;
+    background-color: #5c4033;
     color: white;
     border-radius: 50%;
     display: flex;

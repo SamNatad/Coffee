@@ -3,22 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customize Your Drink - Brew Haven</title>
+    <title>Customize Your Drink - Unknown Coffee</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="logo">
-            <img src="https://via.placeholder.com/40x40?text=☕" alt="Brew Haven Logo">
-            <span>Brew Haven</span>
+            <svg class="logo-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 8H18V18C18 20.2091 16.2091 22 14 22H6C3.79086 22 2 20.2091 2 18V8Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18 8H20C21.1046 8 22 8.89543 22 10V12C22 13.1046 21.1046 14 20 14H18" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Unknown Coffee</span>
         </div>
         <ul class="nav-links">
             <li><a href="index.html#home">Home</a></li>
             <li><a href="index.html#main-feature">Main Feature</a></li>
             <li><a href="index.html#about">About</a></li>
             <li><a href="index.html#contact">Contact</a></li>
-            <li><a href="login.html">Login</a></li>
+            <li><a href="cart.html" id="nav-cart-btn">Cart</a></li>
+            <li><a href="#" id="nav-order-status-btn">Order Status</a></li>
+            <li><a href="login.html" id="nav-login-btn">Login</a></li>
         </ul>
     </nav>
 
@@ -62,17 +70,139 @@
         </div>
     </section>
 
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutConfirmModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="lock-icon">🚪</div>
+                <h3>Confirm Logout</h3>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to log out?</p>
+            </div>
+            <div class="modal-actions">
+                <button id="confirmLogoutBtn" class="btn-primary">Yes</button>
+                <button id="cancelLogoutBtn" class="btn-secondary">No</button>
+            </div>
+        </div>
+    </div>
+    <div id="loginRequiredModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="lock-icon">🔒</div>
+                <h3>Login Required</h3>
+            </div>
+            <div class="modal-body">
+                <p>Please log in to your account first before placing an order.</p>
+            </div>
+            <div class="modal-actions">
+                <button id="loginNowBtn" class="btn-primary">Login Now</button>
+                <button id="cancelLoginBtn" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div id="toast" class="toast">Item added to cart!</div>
 
-    <!-- Floating Cart Icon -->
-    <div id="floatingCart" class="floating-cart">
-        <a href="cart.html" class="cart-link">
-            <span class="cart-icon">🛒</span>
-            <span id="cartCount" class="cart-badge">0</span>
-        </a>
-    </div>
+    <script>
+        function openCart() {
+            window.location.href = 'cart.html';
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('add-to-cart-btn');
+            if (btn) {
+                btn.addEventListener('click', addToCart);
+            }
+        });
+            
+            const loginNowBtn = document.getElementById('loginNowBtn');
+            const cancelLoginBtn = document.getElementById('cancelLoginBtn');
+            
+            if (loginNowBtn) {
+                loginNowBtn.addEventListener('click', () => {
+                    if (modal) modal.classList.remove('show');
+                    window.location.href = 'login.html';
+                });
+            }
+            if (cancelLoginBtn) {
+                cancelLoginBtn.addEventListener('click', () => {
+                    if (modal) modal.classList.remove('show');
+                });
+            }
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('show');
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutModal = document.getElementById('logoutConfirmModal');
+            const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
+            const cancelLogoutBtn = document.getElementById('cancelLogoutBtn');
+            
+            if (confirmLogoutBtn) {
+                confirmLogoutBtn.addEventListener('click', () => {
+                    if (logoutModal) logoutModal.classList.remove('show');
+                    sessionStorage.removeItem('currentUser');
+                    window.location.reload();
+                });
+            }
+            if (cancelLogoutBtn) {
+                cancelLogoutBtn.addEventListener('click', () => {
+                    if (logoutModal) logoutModal.classList.remove('show');
+                });
+            }
+            if (logoutModal) {
+                logoutModal.addEventListener('click', (e) => {
+                    if (e.target === logoutModal) {
+                        logoutModal.classList.remove('show');
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="customize.js?v=2"></script>
+    <script>
+        function updateNavAuthUI() {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            const loginNavBtn = document.getElementById('nav-login-btn');
 
-    <script src="customize.js"></script>
+            if (loginNavBtn) {
+                if (currentUser && currentUser.username) {
+                    loginNavBtn.textContent = `Logout (${currentUser.username})`;
+                    loginNavBtn.href = '#';
+                    loginNavBtn.onclick = function(e) {
+                        e.preventDefault();
+                        logoutUser();
+                    };
+                } else {
+                    loginNavBtn.textContent = 'Login';
+                    loginNavBtn.href = 'login.html';
+                    loginNavBtn.onclick = null;
+                }
+                // Always show order status button
+                const orderStatusBtn = document.getElementById('nav-order-status-btn');
+                if (orderStatusBtn) {
+                    orderStatusBtn.style.display = 'inline-block';
+                }
+            }
+        }
+
+        function logoutUser() {
+            sessionStorage.removeItem('currentUser');
+            window.currentUser = null;
+            updateNavAuthUI();
+            window.location.href = 'index.html#home';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavAuthUI();
+        });
+    </script>
 </body>
 </html>

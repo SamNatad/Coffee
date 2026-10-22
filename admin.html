@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Unknown Coffee</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <svg class="logo-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 8H18V18C18 20.2091 16.2091 22 14 22H6C3.79086 22 2 20.2091 2 18V8Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18 8H20C21.1046 8 22 8.89543 22 10V12C22 13.1046 21.1046 14 20 14H18" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Unknown Coffee</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" id="nav-login-btn">Logout (Admin)</a></li>
+        </ul>
+    </nav>
+
+    <!-- Admin Dashboard Section -->
+    <section class="admin-dashboard">
+        <div class="dashboard-container">
+            <h2>Admin Dashboard</h2>
+            
+            <!-- Analytics Summary Cards -->
+            <div class="analytics-cards">
+                <div class="analytics-card">
+                    <h3>Total Revenue (₱)</h3>
+                    <p class="analytics-value" id="totalRevenue">₱0.00</p>
+                </div>
+                <div class="analytics-card">
+                    <h3>Active Orders</h3>
+                    <p class="analytics-value" id="activeOrders">0</p>
+                </div>
+                <div class="analytics-card">
+                    <h3>Total Items Sold</h3>
+                    <p class="analytics-value" id="totalItemsSold">0</p>
+                </div>
+            </div>
+
+            <!-- Live Order Management -->
+            <div class="dashboard-section">
+                <h3>Live Order Management</h3>
+                <div class="table-container">
+                    <table class="order-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer Name</th>
+                                <th>Items & Customizations</th>
+                                <th>Total Price (₱)</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderTableBody">
+                            <!-- Orders will be populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Protect admin page
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            if (!currentUser || currentUser.role !== 'admin') {
+                window.location.href = 'login.html';
+            }
+        });
+
+        function logoutUser() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'index.html#home';
+        }
+        document.getElementById('nav-login-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            logoutUser();
+        });
+
+        // Load orders from localStorage
+        let orders = JSON.parse(localStorage.getItem('allOrders')) || [];
+
+        // Render orders
+        function renderOrders() {
+            const tbody = document.getElementById('orderTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = orders.map(order => `
+                <tr>
+                    <td>${order.orderId}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.items.join('<br>')}</td>
+                    <td>₱${order.totalPrice.toFixed(2)}</td>
+                    <td>
+                        <select class="status-select" data-id="${order.orderId}">
+                            <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option value="Preparing" ${order.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
+                            <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                            <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </td>
+                    <td><button class="btn-delete" data-id="${order.orderId}">Delete</button></td>
+                </tr>
+            `).join('');
+
+            // Add event listeners for status change
+            document.querySelectorAll('.status-select').forEach(select => {
+                select.addEventListener('change', (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    const order = orders.find(o => o.orderId === id);
+                    if (order) {
+                        order.status = e.target.value;
+                        localStorage.setItem('allOrders', JSON.stringify(orders));
+                        updateAnalytics();
+                    }
+                });
+            });
+
+            // Add event listeners for delete
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    orders = orders.filter(o => o.orderId !== id);
+                    localStorage.setItem('allOrders', JSON.stringify(orders));
+                    renderOrders();
+                    updateAnalytics();
+                });
+            });
+        }
+
+        // Update analytics
+        function updateAnalytics() {
+            const totalRevenue = orders.reduce((sum, o) => sum + o.totalPrice, 0);
+            const activeOrders = orders.filter(o => o.status === 'Pending' || o.status === 'Preparing').length;
+            const totalItemsSold = orders.reduce((sum, o) => sum + o.items.length, 0);
+
+            document.getElementById('totalRevenue').textContent = `₱${totalRevenue.toFixed(2)}`;
+            document.getElementById('activeOrders').textContent = activeOrders;
+            document.getElementById('totalItemsSold').textContent = totalItemsSold;
+        }
+
+        // Initialize
+        renderOrders();
+        updateAnalytics();
+    </script>
+</body>
+</html>

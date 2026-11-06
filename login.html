@@ -3,81 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Unknown Coffee Coffee Shop</title>
+    <title>Customer Login - Unknown Coffee</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Lucide Vector Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <!-- Navigation Bar (same as index.html but without login link) -->
+    <!-- Top Announcement Bar -->
+    <div class="announcement-bar">
+        <span>Your daily coffee stop</span>
+        <span class="dot-sep">•</span>
+        <span>Open daily 7AM-8PM</span>
+        <span class="dot-sep">•</span>
+        <span class="hide-mobile">Specialty coffee, matcha &amp; cold brews</span>
+        <span class="dot-sep hide-mobile">•</span>
+        <span>Davao City</span>
+    </div>
+
+    <!-- Top Navigation Bar -->
     <nav class="navbar">
-        <div class="logo">
-            <svg class="logo-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 8H18V18C18 20.2091 16.2091 22 14 22H6C3.79086 22 2 20.2091 2 18V8Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M18 8H20C21.1046 8 22 8.89543 22 10V12C22 13.1046 21.1046 14 20 14H18" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M6 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M10 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M14 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <a href="index.html#home" class="logo">
+            <svg class="logo-beans" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="14" cy="18" rx="9" ry="13" transform="rotate(-25 14 18)" fill="#381c09"/>
+                <path d="M11 7C14 13 14 23 17 29" stroke="#faf4e8" stroke-width="2" stroke-linecap="round"/>
+                <ellipse cx="23" cy="18" rx="8" ry="11" transform="rotate(25 23 18)" fill="#ea9642"/>
+                <path d="M26 9C23 14 23 22 20 27" stroke="#381c09" stroke-width="2" stroke-linecap="round"/>
             </svg>
-            <span>Unknown Coffee</span>
-        </div>
+            <span class="logo-text">Unknown Coffee</span>
+        </a>
+
         <ul class="nav-links">
             <li><a href="index.html#home">Home</a></li>
-            <li><a href="index.html#main-feature">Main Feature</a></li>
-            <li><a href="index.html#about">About</a></li>
-            <li><a href="index.html#contact">Contact</a></li>
-            <!-- Login link is not needed on login page -->
+            <li><a href="index.html#main-feature">Menu</a></li>
+            <li><a href="index.html#about">About Us</a></li>
+            <li><a href="index.html#contact">Visit</a></li>
+            <li><a href="cart.html" id="nav-cart-btn">Cart <span class="cart-badge" id="global-cart-badge">0</span></a></li>
         </ul>
+
+        <div class="nav-actions">
+            <button class="btn-side-toggle" id="sideMenuToggle" aria-label="Open Side Menu">
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span>Menu</span>
+            </button>
+        </div>
     </nav>
 
-    <!-- Login Section -->
+    <!-- Off-Canvas Side Menu Drawer & Overlay -->
+    <div id="sideMenuOverlay" class="side-menu-overlay"></div>
+    <aside id="sideMenu" class="side-menu" aria-label="Side Navigation Menu">
+        <div class="side-menu-header">
+            <div class="logo">
+                <svg class="logo-beans" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="14" cy="18" rx="9" ry="13" transform="rotate(-25 14 18)" fill="#381c09"/>
+                    <path d="M11 7C14 13 14 23 17 29" stroke="#faf4e8" stroke-width="2" stroke-linecap="round"/>
+                    <ellipse cx="23" cy="18" rx="8" ry="11" transform="rotate(25 23 18)" fill="#ea9642"/>
+                    <path d="M26 9C23 14 23 22 20 27" stroke="#381c09" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="logo-text">Unknown Coffee</span>
+            </div>
+            <button id="closeSideMenu" class="side-menu-close" aria-label="Close menu"><i data-lucide="x"></i></button>
+        </div>
+
+        <div class="side-menu-body">
+            <ul class="side-nav-list">
+                <li><a href="index.html#home" class="side-link"><span class="side-link-text"><i data-lucide="home" style="margin-right: 10px;"></i> Home</span><i data-lucide="chevron-right"></i></a></li>
+                <li><a href="index.html#main-feature" class="side-link"><span class="side-link-text"><i data-lucide="coffee" style="margin-right: 10px;"></i> Our Menu</span><span class="side-tag-pill">13 Items</span></a></li>
+                <li><a href="index.html#about" class="side-link"><span class="side-link-text"><i data-lucide="info" style="margin-right: 10px;"></i> About Us</span><i data-lucide="chevron-right"></i></a></li>
+                <li><a href="index.html#contact" class="side-link"><span class="side-link-text"><i data-lucide="map-pin" style="margin-right: 10px;"></i> Hours &amp; Location</span><i data-lucide="chevron-right"></i></a></li>
+                <li><a href="cart.html" class="side-link"><span class="side-link-text"><i data-lucide="shopping-bag" style="margin-right: 10px;"></i> Your Cart</span><span class="cart-badge side-cart-badge">0</span></a></li>
+            </ul>
+        </div>
+
+        <div class="side-menu-footer">
+            <div class="side-hours-box">
+                <span class="hours-live-dot"></span>
+                <div>
+                    <strong>Mon - Fri:</strong> 6AM - 8PM<br>
+                    <strong>Sat - Sun:</strong> 7AM - 9PM
+                </div>
+            </div>
+            <a href="index.html#main-feature" class="side-menu-cta">Browse Menu ↗</a>
+        </div>
+    </aside>
+
+    <!-- Customer Login Section -->
     <section class="login-section">
         <div class="login-content">
-            <h2>Login to Unknown Coffee</h2>
-            <p>Access your account to save preferences and order history.</p>
+            <span class="wavy-badge"><i data-lucide="user"></i> CUSTOMER SIGN IN</span>
+            <h2>Welcome Back</h2>
+            <p>Sign in to your customer account to place orders, save your custom drink preferences, and track live preparations.</p>
+
             <form id="loginForm">
-                <input type="text" id="username" placeholder="Username" required>
-                <input type="password" id="password" placeholder="Password" required>
+                <div style="position: relative; text-align: left;">
+                    <input type="text" id="username" placeholder="Customer Username" required autofocus>
+                </div>
+                <div style="position: relative; text-align: left;">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
                 <div class="show-password">
                     <input type="checkbox" id="showPassword">
                     <label for="showPassword">Show Password</label>
                 </div>
-                <button type="submit" class="btn-login">Login</button>
+                <button type="submit" class="btn-login">Sign In <i data-lucide="arrow-right"></i></button>
             </form>
-            <p id="errorMsg" style="color: red; display: none;">Invalid username or password. Please try again.</p>
-            <p><small>By logging in, you agree to our Terms of Service and Privacy Policy.</small></p>
+
+            <p id="errorMsg" style="color: #c0392b; font-weight: 600; display: none;">Invalid username or password. Please try again.</p>
+            <p id="adminRedirectMsg" style="color: var(--espresso); font-weight: 600; display: none; margin-top: 10px;">Administrator credentials detected. Redirecting to Admin Portal...</p>
+            
+            <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1.5px dashed rgba(56,28,9,0.2);">
+                <p style="font-size: 0.82rem; color: var(--espresso-muted); margin-bottom: 0.5rem;">Customer Demo: <strong>user123</strong> / <strong>12345</strong></p>
+                <a href="admin-login.html" class="auth-switch-link"><i data-lucide="shield-check"></i> Store Staff or Administrator? Access Admin Portal →</a>
+            </div>
         </div>
     </section>
 
-            <script>
-                document.getElementById('showPassword').addEventListener('change', function() {
-                    const passwordInput = document.getElementById('password');
-                    if (this.checked) {
-                        passwordInput.type = 'text';
-                    } else {
-                        passwordInput.type = 'password';
-                    }
-                });
-
-                document.getElementById('loginForm').addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const username = document.getElementById('username').value;
-                    const password = document.getElementById('password').value;
-                    const errorMsg = document.getElementById('errorMsg');
-
-                    if (username === 'user123' && password === '12345') {
-                        sessionStorage.setItem('currentUser', JSON.stringify({ username: 'user123', role: 'customer' }));
-                        window.location.href = 'index.html#main-feature';
-                    } else if (username === 'admin123' && password === '12345') {
-                sessionStorage.setItem('currentUser', JSON.stringify({ username: 'admin123', role: 'admin' }));
-                window.location.href = 'admin.html';
-                    } else {
-                        errorMsg.style.display = 'block';
-                    }
-                });
-            </script>
-
     <!-- Footer -->
     <footer>
-        <p>&copy; 2023 Unknown Coffee Coffee Shop. All rights reserved.</p>
+        <p>&copy; 2026 Unknown Coffee Shop. Crafted with passion &amp; ethical roasts.</p>
     </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+        });
+
+        document.getElementById('showPassword').addEventListener('change', function() {
+            const passwordInput = document.getElementById('password');
+            passwordInput.type = this.checked ? 'text' : 'password';
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            const adminRedirectMsg = document.getElementById('adminRedirectMsg');
+
+            errorMsg.style.display = 'none';
+            adminRedirectMsg.style.display = 'none';
+
+            if (username === 'user123' && password === '12345') {
+                sessionStorage.setItem('currentUser', JSON.stringify({ username: 'user123', role: 'customer' }));
+                window.location.href = 'index.html#main-feature';
+            } else if (username === 'admin123' && password === '12345') {
+                // If admin credentials entered here, redirect to the separate admin page
+                adminRedirectMsg.style.display = 'block';
+                sessionStorage.setItem('currentUser', JSON.stringify({ username: 'admin123', role: 'admin' }));
+                setTimeout(() => {
+                    window.location.href = 'admin.html';
+                }, 800);
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>

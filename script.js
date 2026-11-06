@@ -5,7 +5,7 @@ let dots = [];
 let autoPlayInterval;
 
 function goToSlide(index) {
-    if (slides.length === 0) return;
+    if (!slides || slides.length === 0) return;
     slides[currentSlide].classList.remove('active');
     if (dots[currentSlide]) dots[currentSlide].classList.remove('active');
     currentSlide = index;
@@ -15,13 +15,13 @@ function goToSlide(index) {
 }
 
 function nextSlide() {
-    if (slides.length === 0) return;
+    if (!slides || slides.length === 0) return;
     const next = (currentSlide + 1) % slides.length;
     goToSlide(next);
 }
 
 function prevSlide() {
-    if (slides.length === 0) return;
+    if (!slides || slides.length === 0) return;
     const prev = (currentSlide - 1 + slides.length) % slides.length;
     goToSlide(prev);
 }
@@ -35,8 +35,57 @@ function resetAutoPlay() {
     startAutoPlay();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Update floating cart badge on load (FIRST)
+// Side Menu Drawer Toggle Logic
+function initSideMenu() {
+    const sideMenu = document.getElementById('sideMenu');
+    const sideMenuOverlay = document.getElementById('sideMenuOverlay');
+    const sideMenuToggle = document.getElementById('sideMenuToggle');
+    const closeSideMenu = document.getElementById('closeSideMenu');
+
+    function openMenu() {
+        if (sideMenu) sideMenu.classList.add('active');
+        if (sideMenuOverlay) sideMenuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+        if (sideMenu) sideMenu.classList.remove('active');
+        if (sideMenuOverlay) sideMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (sideMenuToggle) {
+        sideMenuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openMenu();
+        });
+    }
+
+    if (closeSideMenu) {
+        closeSideMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeMenu();
+        });
+    }
+
+    if (sideMenuOverlay) {
+        sideMenuOverlay.addEventListener('click', closeMenu);
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+    });
+
+    const sideLinks = document.querySelectorAll('.side-link');
+    sideLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            closeMenu();
+        });
+    });
+}
+
+// Sync Cart Badges Across Top Navbar and Side Menu
+function syncCartBadges() {
     window.cart = JSON.parse(localStorage.getItem('brewHavenCart')) || [];
     const badges = document.querySelectorAll('#global-cart-badge, .cart-badge, .cart-count, span[id*="badge"]');
     const totalItems = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
@@ -44,9 +93,26 @@ document.addEventListener('DOMContentLoaded', () => {
         badge.innerHTML = totalItems.toString();
         badge.textContent = totalItems.toString();
     });
-    console.log('Cart Badge Updated to:', totalItems);
+}
 
-    // Filter tabs functionality
+// Initialize Lucide vector icons
+function refreshLucideIcons() {
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initialize Side Menu
+    initSideMenu();
+
+    // 2. Update cart badge on load
+    syncCartBadges();
+
+    // 3. Render Lucide icons
+    refreshLucideIcons();
+
+    // 4. Filter tabs functionality
     const filterButtons = document.querySelectorAll('.filter-btn');
     const productCards = document.querySelectorAll('.product-card');
 
@@ -59,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             productCards.forEach(card => {
                 if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.style.display = 'block';
+                    card.style.display = 'flex';
                 } else {
                     card.style.display = 'none';
                 }
@@ -67,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Toast notification
+    // 5. Toast notification
     const toast = document.getElementById('toast');
     function showToast(message) {
         if (!toast) return;
@@ -78,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // Contact form submission
+    // 6. Contact form submission
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
@@ -88,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Live open/closed status
+    // 7. Live open/closed status
     function updateStatus() {
         const now = new Date();
         const day = now.getDay();
@@ -98,14 +164,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let isOpen = false;
 
+        // Mon-Fri: 6AM - 8PM, Sat-Sun: 7AM - 9PM
         if (day >= 1 && day <= 5) {
             isOpen = time >= 6 && time < 20;
         } else {
             isOpen = time >= 7 && time < 21;
         }
 
-        const badge = document.getElementById('statusBadge');
-        if (badge) {
+        const badges = document.querySelectorAll('#statusBadge, .live-status-pill');
+        badges.forEach(badge => {
             if (isOpen) {
                 badge.textContent = 'Open Now';
                 badge.classList.remove('closed');
@@ -115,20 +182,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 badge.classList.remove('open');
                 badge.classList.add('closed');
             }
-        }
+        });
     }
 
     updateStatus();
     setInterval(updateStatus, 60000);
 
-    // Hero Slider
+    // 8. Hero Slider
     slides = document.querySelectorAll('.slide');
     const prevBtn = document.getElementById('prevSlide');
     const nextBtn = document.getElementById('nextSlide');
     const dotsContainer = document.getElementById('sliderDots');
 
-    // Create dots
-    if (dotsContainer) {
+    if (dotsContainer && slides.length > 0 && dotsContainer.children.length === 0) {
         slides.forEach((_, index) => {
             const dot = document.createElement('div');
             dot.classList.add('dot');

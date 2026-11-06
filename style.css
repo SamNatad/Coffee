@@ -1838,6 +1838,12 @@ button, input, select, textarea {
     font-size: 0.9rem;
     cursor: pointer;
     justify-content: flex-start;
+    margin: 0;
+}
+
+.show-password input {
+    width: auto;
+    margin: 0;
 }
 
 .btn-login {

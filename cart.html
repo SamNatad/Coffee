@@ -5,51 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Order - Unknown Coffee</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Lucide Vector Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <!-- Navigation Bar -->
+    <!-- Top Announcement Bar -->
+    <div class="announcement-bar">
+        <span>Your daily coffee stop</span>
+        <span class="dot-sep">•</span>
+        <span>Open daily 7AM-8PM</span>
+        <span class="dot-sep">•</span>
+        <span class="hide-mobile">Specialty coffee, matcha &amp; cold brews</span>
+        <span class="dot-sep hide-mobile">•</span>
+        <span>Davao City</span>
+    </div>
+
+    <!-- Top Navigation Bar -->
     <nav class="navbar">
-        <div class="logo">
-            <svg class="logo-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 8H18V18C18 20.2091 16.2091 22 14 22H6C3.79086 22 2 20.2091 2 18V8Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M18 8H20C21.1046 8 22 8.89543 22 10V12C22 13.1046 21.1046 14 20 14H18" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M6 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M10 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M14 2V4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <a href="index.html#home" class="logo">
+            <svg class="logo-beans" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="14" cy="18" rx="9" ry="13" transform="rotate(-25 14 18)" fill="#381c09"/>
+                <path d="M11 7C14 13 14 23 17 29" stroke="#faf4e8" stroke-width="2" stroke-linecap="round"/>
+                <ellipse cx="23" cy="18" rx="8" ry="11" transform="rotate(25 23 18)" fill="#ea9642"/>
+                <path d="M26 9C23 14 23 22 20 27" stroke="#381c09" stroke-width="2" stroke-linecap="round"/>
             </svg>
-            <span>Unknown Coffee</span>
-        </div>
+            <span class="logo-text">Unknown Coffee</span>
+        </a>
+
         <ul class="nav-links">
             <li><a href="index.html#home">Home</a></li>
-            <li><a href="index.html#main-feature">Main Feature</a></li>
-            <li><a href="index.html#about">About</a></li>
-            <li><a href="index.html#contact">Contact</a></li>
-            <li><a href="cart.html" id="nav-cart-btn">Cart</a></li>
-            <li><a href="#" id="nav-order-status-btn">Order Status</a></li>
-            <li><a href="login.html" id="nav-login-btn">Login</a></li>
+            <li><a href="index.html#main-feature">Menu</a></li>
+            <li><a href="index.html#about">About Us</a></li>
+            <li><a href="index.html#contact">Visit</a></li>
+            <li><a href="cart.html" id="nav-cart-btn" class="active"><i data-lucide="shopping-bag" style="width: 15px; height: 15px; margin-right: 4px;"></i> Cart <span class="cart-badge" id="global-cart-badge">0</span></a></li>
+            <li><a href="index.html#home" id="nav-order-status-btn"><i data-lucide="clipboard-list" style="width: 15px; height: 15px; margin-right: 4px;"></i> Order Status</a></li>
         </ul>
+
+        <div class="nav-actions">
+            <a href="login.html" id="nav-login-btn" class="btn-nav-order">
+                <i data-lucide="user" style="width: 15px; height: 15px;"></i> Login
+            </a>
+            <button class="btn-side-toggle" id="sideMenuToggle" aria-label="Open Side Menu">
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span>Menu</span>
+            </button>
+        </div>
     </nav>
+
+    <!-- Off-Canvas Side Menu Drawer & Overlay -->
+    <div id="sideMenuOverlay" class="side-menu-overlay"></div>
+    <aside id="sideMenu" class="side-menu" aria-label="Side Navigation Menu">
+        <div class="side-menu-header">
+            <div class="logo">
+                <svg class="logo-beans" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="14" cy="18" rx="9" ry="13" transform="rotate(-25 14 18)" fill="#381c09"/>
+                    <path d="M11 7C14 13 14 23 17 29" stroke="#faf4e8" stroke-width="2" stroke-linecap="round"/>
+                    <ellipse cx="23" cy="18" rx="8" ry="11" transform="rotate(25 23 18)" fill="#ea9642"/>
+                    <path d="M26 9C23 14 23 22 20 27" stroke="#381c09" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="logo-text">Unknown Coffee</span>
+            </div>
+            <button id="closeSideMenu" class="side-menu-close" aria-label="Close menu"><i data-lucide="x"></i></button>
+        </div>
+
+        <div class="side-menu-body">
+            <div class="side-user-card">
+                <div class="side-user-avatar">
+                    <i data-lucide="user" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div class="side-user-info">
+                    <h4 id="sideUserGreeting">Welcome, Guest!</h4>
+                    <p id="sideUserSub">Sign in to track orders</p>
+                </div>
+            </div>
+
+            <ul class="side-nav-list">
+                <li><a href="index.html#home" class="side-link"><span class="side-link-text"><i data-lucide="home" style="margin-right: 10px;"></i> Home</span><i data-lucide="chevron-right"></i></a></li>
+                <li><a href="index.html#main-feature" class="side-link"><span class="side-link-text"><i data-lucide="coffee" style="margin-right: 10px;"></i> Our Menu</span><span class="side-tag-pill">13 Items</span></a></li>
+                <li><a href="index.html#about" class="side-link"><span class="side-link-text"><i data-lucide="sparkles" style="margin-right: 10px;"></i> About Us</span><i data-lucide="chevron-right"></i></a></li>
+                <li><a href="index.html#contact" class="side-link"><span class="side-link-text"><i data-lucide="map-pin" style="margin-right: 10px;"></i> Hours &amp; Location</span><i data-lucide="chevron-right"></i></a></li>
+                <li><a href="cart.html" class="side-link"><span class="side-link-text"><i data-lucide="shopping-bag" style="margin-right: 10px;"></i> Your Cart</span><span class="cart-badge side-cart-badge">0</span></a></li>
+                <li><a href="login.html" id="side-login-btn" class="side-link"><span class="side-link-text"><i data-lucide="user" style="margin-right: 10px;"></i> Customer Login</span><i data-lucide="chevron-right"></i></a></li>
+                <li><a href="admin-login.html" class="side-link"><span class="side-link-text"><i data-lucide="shield-check" style="margin-right: 10px;"></i> Admin Portal</span><i data-lucide="chevron-right"></i></a></li>
+            </ul>
+        </div>
+
+        <div class="side-menu-footer">
+            <div class="side-hours-box">
+                <span class="hours-live-dot"></span>
+                <div>
+                    <strong>Mon - Fri:</strong> 6AM - 8PM<br>
+                    <strong>Sat - Sun:</strong> 7AM - 9PM
+                </div>
+            </div>
+            <a href="index.html#main-feature" class="side-menu-cta">Browse Menu ↗</a>
+        </div>
+    </aside>
 
     <!-- Cart Section -->
     <section class="cart-section">
         <div class="cart-container">
-            <a href="index.html#main-feature" class="btn-back" style="margin-bottom: 1rem; display: inline-block;">← Continue Shopping</a>
+            <a href="index.html#main-feature" class="btn-back"><i data-lucide="arrow-left" style="width: 14px; height: 14px; margin-right: 4px;"></i> Continue Shopping</a>
             <h2>Your Order</h2>
             <div id="cartItems" class="cart-items">
-                <!-- Cart items will be rendered here by JavaScript -->
+                <!-- Cart items rendered by cart.js -->
             </div>
-                <div class="cart-summary">
-                    <div class="summary-row">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">₱0.00</span>
-                    </div>
-                    <div class="summary-row total">
-                        <span>Total:</span>
-                        <span id="total">₱0.00</span>
-                    </div>
-                    <button id="checkoutBtn" class="btn-submit">Finalize Order / Checkout</button>
-                    <span id="emptyCartMsg" class="empty-cart-msg"></span>
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">₱0.00</span>
                 </div>
+                <div class="summary-row total">
+                    <span>Total Amount:</span>
+                    <span id="total">₱0.00</span>
+                </div>
+                <button id="checkoutBtn" class="btn-submit" style="width: 100%;">
+                    Finalize Order / Checkout <i data-lucide="arrow-right" style="width: 18px; height: 18px; margin-left: 6px;"></i>
+                </button>
+                <p id="emptyCartMsg" style="color: #c0392b; font-weight: 600; text-align: center; margin-top: 10px;"></p>
+            </div>
         </div>
     </section>
 
@@ -57,60 +135,116 @@
     <div id="checkoutModal" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-header">
-                <div class="success-icon">☕</div>
+                <div class="success-icon"><i data-lucide="check-circle-2" style="width: 38px; height: 38px; color: #27ae60;"></i></div>
                 <h3>Order Placed Successfully!</h3>
             </div>
             <div class="modal-body">
-                <div id="orderSummary" class="order-summary"></div>
-                <p class="pickup-time">Estimated pickup time: <span id="pickupTime"></span></p>
-                <div class="total-paid">
-                    <span>Total Paid:</span>
+                <div id="orderSummary" class="order-summary" style="text-align: left; margin-bottom: 1rem; max-height: 200px; overflow-y: auto;"></div>
+                <p class="pickup-time" style="font-weight: 600; margin-bottom: 0.5rem;">Estimated pickup time: <span id="pickupTime" style="color: var(--caramel-hover);"></span></p>
+                <div class="total-paid" style="font-size: 1.25rem; font-weight: 700; color: var(--espresso);">
+                    <span>Total Paid: </span>
                     <span id="totalPaid">₱0.00</span>
                 </div>
             </div>
             <div class="modal-actions">
-                <button id="backToMenuBtn" class="btn-primary">Back to Menu</button>
-                <button id="viewReceiptBtn" class="btn-secondary">View Receipt</button>
+                <button id="backToMenuBtn" class="btn-primary">Back to Menu ↗</button>
+                <button id="viewReceiptBtn" class="btn-secondary">Print Receipt <i data-lucide="printer" style="width: 15px; height: 15px; margin-left: 4px;"></i></button>
             </div>
         </div>
     </div>
 
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutConfirmModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="lock-icon"><i data-lucide="log-out" style="width: 38px; height: 38px; color: var(--caramel);"></i></div>
+                <h3>Confirm Logout</h3>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to log out of your session?</p>
+            </div>
+            <div class="modal-actions">
+                <button id="confirmLogoutBtn" class="btn-primary">Yes, Logout</button>
+                <button id="cancelLogoutBtn" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Unknown Coffee Shop. Crafted with passion &amp; ethical roasts.</p>
+    </footer>
+
+    <script src="script.js"></script>
     <script src="cart.js"></script>
     <script>
         function updateNavAuthUI() {
             const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
             const loginNavBtn = document.getElementById('nav-login-btn');
+            const sideLoginBtn = document.getElementById('side-login-btn');
+            const sideUserGreeting = document.getElementById('sideUserGreeting');
+            const sideUserSub = document.getElementById('sideUserSub');
 
-            if (loginNavBtn) {
-                if (currentUser && currentUser.username) {
-                    loginNavBtn.textContent = `Logout (${currentUser.username})`;
+            if (currentUser && currentUser.username) {
+                if (loginNavBtn) {
+                    loginNavBtn.innerHTML = `<i data-lucide="log-out" style="width: 15px; height: 15px; margin-right: 4px;"></i> Logout (${currentUser.username})`;
                     loginNavBtn.href = '#';
                     loginNavBtn.onclick = function(e) {
                         e.preventDefault();
-                        logoutUser();
+                        const logoutModal = document.getElementById('logoutConfirmModal');
+                        if (logoutModal) logoutModal.classList.add('show');
                     };
-                } else {
-                    loginNavBtn.textContent = 'Login';
+                }
+                if (sideLoginBtn) {
+                    sideLoginBtn.innerHTML = `<span class="side-link-text"><i data-lucide="log-out" style="margin-right: 10px;"></i> Logout (${currentUser.username})</span><i data-lucide="chevron-right"></i>`;
+                    sideLoginBtn.href = '#';
+                    sideLoginBtn.onclick = function(e) {
+                        e.preventDefault();
+                        const logoutModal = document.getElementById('logoutConfirmModal');
+                        if (logoutModal) logoutModal.classList.add('show');
+                    };
+                }
+                if (sideUserGreeting) sideUserGreeting.textContent = `Hello, ${currentUser.username}!`;
+                if (sideUserSub) sideUserSub.textContent = currentUser.role === 'admin' ? 'Administrator' : 'Customer Account';
+            } else {
+                if (loginNavBtn) {
+                    loginNavBtn.innerHTML = `<i data-lucide="user" style="width: 15px; height: 15px; margin-right: 4px;"></i> Login`;
                     loginNavBtn.href = 'login.html';
                     loginNavBtn.onclick = null;
                 }
+                if (sideLoginBtn) {
+                    sideLoginBtn.innerHTML = `<span class="side-link-text"><i data-lucide="user" style="margin-right: 10px;"></i> Customer Login</span><i data-lucide="chevron-right"></i>`;
+                    sideLoginBtn.href = 'login.html';
+                    sideLoginBtn.onclick = null;
+                }
             }
-            // Always show order status button
-            const orderStatusBtn = document.getElementById('nav-order-status-btn');
-            if (orderStatusBtn) {
-                orderStatusBtn.style.display = 'inline-block';
-            }
-        }
-
-        function logoutUser() {
-            sessionStorage.removeItem('currentUser');
-            window.currentUser = null;
-            updateNavAuthUI();
-            window.location.href = 'index.html#home';
+            if (window.lucide) lucide.createIcons();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             updateNavAuthUI();
+
+            const logoutModal = document.getElementById('logoutConfirmModal');
+            const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
+            const cancelLogoutBtn = document.getElementById('cancelLogoutBtn');
+            if (confirmLogoutBtn) {
+                confirmLogoutBtn.addEventListener('click', () => {
+                    if (logoutModal) logoutModal.classList.remove('show');
+                    sessionStorage.removeItem('currentUser');
+                    window.location.reload();
+                });
+            }
+            if (cancelLogoutBtn) {
+                cancelLogoutBtn.addEventListener('click', () => {
+                    if (logoutModal) logoutModal.classList.remove('show');
+                });
+            }
+            if (logoutModal) {
+                logoutModal.addEventListener('click', (e) => {
+                    if (e.target === logoutModal) logoutModal.classList.remove('show');
+                });
+            }
+            if (window.lucide) lucide.createIcons();
         });
     </script>
 </body>

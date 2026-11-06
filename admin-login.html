@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator Portal Login - Unknown Coffee</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Vector Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body style="background-color: var(--bg-page-alt);">
+    <!-- Top Announcement Bar -->
+    <div class="announcement-bar" style="background-color: var(--espresso-dark);">
+        <span><i data-lucide="shield" style="width: 14px; height: 14px;"></i> Restricted Store Management Console</span>
+        <span class="dot-sep">•</span>
+        <span>Authorized Personnel Only</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="index.html#home" class="logo">
+            <svg class="logo-beans" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="14" cy="18" rx="9" ry="13" transform="rotate(-25 14 18)" fill="#381c09"/>
+                <path d="M11 7C14 13 14 23 17 29" stroke="#faf4e8" stroke-width="2" stroke-linecap="round"/>
+                <ellipse cx="23" cy="18" rx="8" ry="11" transform="rotate(25 23 18)" fill="#ea9642"/>
+                <path d="M26 9C23 14 23 22 20 27" stroke="#381c09" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span class="logo-text">Unknown Coffee <span style="font-size: 0.95rem; font-weight: 500; opacity: 0.8;">Admin</span></span>
+        </a>
+
+        <div class="nav-actions">
+            <a href="index.html#home" class="btn-direction" style="font-size: 0.88rem; padding: 0.45rem 1rem;">
+                <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i> Back to Storefront
+            </a>
+        </div>
+    </nav>
+
+    <!-- Admin Portal Login Section -->
+    <section class="login-section">
+        <div class="login-content" style="border: 3.5px solid var(--espresso); background-color: var(--bg-card); max-width: 480px;">
+            <div class="admin-auth-badge">
+                <i data-lucide="shield-alert" style="width: 14px; height: 14px;"></i>
+                <span>SECURE ACCESS PORTAL</span>
+            </div>
+
+            <h2 style="font-size: 2.2rem; margin-bottom: 0.4rem;">Admin Sign In</h2>
+            <p style="font-size: 0.92rem; color: var(--espresso-soft); margin-bottom: 1.8rem;">
+                Enter verified administrative credentials to inspect live store sales, view revenue analytics, and manage customer queue.
+            </p>
+
+            <form id="adminLoginForm">
+                <div style="position: relative; text-align: left;">
+                    <input type="text" id="adminUsername" placeholder="Admin ID (e.g. admin123)" required autofocus>
+                </div>
+                <div style="position: relative; text-align: left;">
+                    <input type="password" id="adminPassword" placeholder="Admin Secret Key" required>
+                </div>
+                <div class="show-password">
+                    <input type="checkbox" id="showAdminPassword">
+                    <label for="showAdminPassword">Show Password</label>
+                </div>
+                <button type="submit" class="btn-login" style="background-color: var(--espresso); color: var(--cream); border-color: var(--espresso);">
+                    Authenticate &amp; Enter Dashboard <i data-lucide="lock" style="width: 16px; height: 16px;"></i>
+                </button>
+            </form>
+
+            <p id="adminErrorMsg" style="color: #c0392b; font-weight: 600; display: none; margin-top: 10px;">
+                Access Denied: Invalid administrator credentials.
+            </p>
+
+            <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1.5px dashed rgba(56,28,9,0.2);">
+                <p style="font-size: 0.8rem; color: var(--espresso-muted); margin-bottom: 0.6rem;">Admin Demo: <strong>admin123</strong> / <strong>12345</strong></p>
+                <a href="login.html" class="auth-switch-link"><i data-lucide="user"></i> Looking for customer ordering? Customer Login →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Unknown Coffee Shop. Administrative console &bull; Internal access only.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+        });
+
+        document.getElementById('showAdminPassword').addEventListener('change', function() {
+            const passwordInput = document.getElementById('adminPassword');
+            passwordInput.type = this.checked ? 'text' : 'password';
+        });
+
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value.trim();
+            const errorMsg = document.getElementById('adminErrorMsg');
+
+            if (username === 'admin123' && password === '12345') {
+                sessionStorage.setItem('currentUser', JSON.stringify({ username: 'admin123', role: 'admin' }));
+                window.location.href = 'admin.html';
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

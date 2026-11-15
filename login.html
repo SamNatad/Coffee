@@ -97,26 +97,54 @@
             <h2>Welcome Back</h2>
             <p>Sign in to your customer account to place orders, save your custom drink preferences, and track live preparations.</p>
 
-            <form id="loginForm">
-                <div style="position: relative; text-align: left;">
-                    <input type="text" id="username" placeholder="Customer Username" required autofocus>
-                </div>
-                <div style="position: relative; text-align: left;">
-                    <input type="password" id="password" placeholder="Password" required>
-                </div>
-                <div class="show-password">
-                    <input type="checkbox" id="showPassword">
-                    <label for="showPassword">Show Password</label>
-                </div>
-                <button type="submit" class="btn-login">Sign In <i data-lucide="arrow-right"></i></button>
-            </form>
+            <!-- Login View -->
+            <div id="loginView">
+                <form id="loginForm">
+                    <div style="position: relative; text-align: left;">
+                        <input type="text" id="username" placeholder="Customer Username" required autofocus>
+                    </div>
+                    <div style="position: relative; text-align: left;">
+                        <input type="password" id="password" placeholder="Password" required>
+                    </div>
+                    <div class="show-password">
+                        <input type="checkbox" id="showPassword">
+                        <label for="showPassword">Show Password</label>
+                    </div>
+                    <button type="submit" class="btn-login">Sign In <i data-lucide="arrow-right"></i></button>
+                </form>
 
-            <p id="errorMsg" style="color: #c0392b; font-weight: 600; display: none;">Invalid username or password. Please try again.</p>
-            <p id="adminRedirectMsg" style="color: var(--espresso); font-weight: 600; display: none; margin-top: 10px;">Administrator credentials detected. Redirecting to Admin Portal...</p>
-            
-            <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1.5px dashed rgba(56,28,9,0.2);">
-                <p style="font-size: 0.82rem; color: var(--espresso-muted); margin-bottom: 0.5rem;">Customer Demo: <strong>user123</strong> / <strong>12345</strong></p>
-                <a href="admin-login.html" class="auth-switch-link"><i data-lucide="shield-check"></i> Store Staff or Administrator? Access Admin Portal →</a>
+                <p id="errorMsg" style="color: #c0392b; font-weight: 600; display: none;">Invalid username or password. Please try again.</p>
+                <p id="adminRedirectMsg" style="color: var(--espresso); font-weight: 600; display: none; margin-top: 10px;">Administrator credentials detected. Redirecting to Admin Portal...</p>
+
+                <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1.5px dashed rgba(56,28,9,0.2); text-align: center;">
+                    <p style="font-size: 0.82rem; color: var(--espresso-muted); margin-bottom: 0.5rem;">Customer Demo: <strong>user123</strong> / <strong>12345</strong></p>
+                    <button type="button" id="toggleCreateAccountBtn" class="auth-switch-link" style="background: none; border: none; cursor: pointer; font-family: inherit; padding: 0;">
+                        <i data-lucide="user-plus"></i> Create Account
+                    </button>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1.5px dashed rgba(56,28,9,0.2);">
+                    <a href="admin-login.html" class="auth-switch-link"><i data-lucide="shield-check"></i> Store Staff or Administrator? Access Admin Portal →</a>
+                </div>
+            </div>
+
+            <!-- Create Account View -->
+            <div id="createAccountView" style="display: none;">
+                <h3 style="font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 0.75rem;">Create Your Account</h3>
+                <form id="registerForm" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;">
+                    <input type="text" id="regUsername" placeholder="Username" required>
+                    <input type="email" id="regGmail" placeholder="Gmail Address" required>
+                    <input type="password" id="regPassword" placeholder="Password" required minlength="6">
+                    <input type="password" id="regConfirmPassword" placeholder="Confirm Password" required minlength="6">
+                    <button type="submit" class="btn-register">Create Account <i data-lucide="user-check"></i></button>
+                </form>
+                <p id="registerMsg" style="color: #c0392b; font-weight: 600; display: none; font-size: 0.9rem;">Passwords do not match. Please try again.</p>
+                <p id="registerSuccessMsg" style="color: #27ae60; font-weight: 600; display: none; font-size: 0.9rem;">Account created! You can now sign in.</p>
+                <p style="font-size: 0.82rem; color: var(--espresso-muted); margin-top: 0.5rem;">
+                    <button type="button" id="backToLoginBtn" class="auth-switch-link" style="background: none; border: none; cursor: pointer; font-family: inherit; padding: 0;">
+                        ← Back to Sign In
+                    </button>
+                </p>
             </div>
         </div>
     </section>
@@ -147,7 +175,12 @@
             errorMsg.style.display = 'none';
             adminRedirectMsg.style.display = 'none';
 
-            if (username === 'user123' && password === '12345') {
+            // Check registered users from localStorage first
+            const users = JSON.parse(localStorage.getItem('coffeeUsers')) || {};
+            if (users[username] && users[username].password === password) {
+                sessionStorage.setItem('currentUser', JSON.stringify({ username: users[username].username, role: users[username].role || 'customer' }));
+                window.location.href = 'index.html#main-feature';
+            } else if (username === 'user123' && password === '12345') {
                 sessionStorage.setItem('currentUser', JSON.stringify({ username: 'user123', role: 'customer' }));
                 window.location.href = 'index.html#main-feature';
             } else if (username === 'admin123' && password === '12345') {
@@ -160,6 +193,76 @@
             } else {
                 errorMsg.style.display = 'block';
             }
+        });
+
+        // Create Account Toggle & Form Handling
+        const toggleCreateAccountBtn = document.getElementById('toggleCreateAccountBtn');
+        const createAccountView = document.getElementById('createAccountView');
+        const backToLoginBtn = document.getElementById('backToLoginBtn');
+        const loginView = document.getElementById('loginView');
+
+        function showCreateAccount() {
+            // Hide login view, show only create account view
+            if (loginView) loginView.style.display = 'none';
+            createAccountView.style.display = 'block';
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function hideCreateAccount() {
+            createAccountView.style.display = 'none';
+            if (loginView) loginView.style.display = '';
+            document.getElementById('registerForm').reset();
+            document.getElementById('registerMsg').style.display = 'none';
+            document.getElementById('registerSuccessMsg').style.display = 'none';
+            if (window.lucide) lucide.createIcons();
+        }
+
+        if (toggleCreateAccountBtn) {
+            toggleCreateAccountBtn.addEventListener('click', () => {
+                showCreateAccount();
+            });
+        }
+
+        if (backToLoginBtn) {
+            backToLoginBtn.addEventListener('click', () => {
+                hideCreateAccount();
+            });
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value.trim();
+            const gmail = document.getElementById('regGmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const registerMsg = document.getElementById('registerMsg');
+            const registerSuccessMsg = document.getElementById('registerSuccessMsg');
+
+            registerMsg.style.display = 'none';
+            registerSuccessMsg.style.display = 'none';
+
+            if (password !== confirmPassword) {
+                registerMsg.style.display = 'block';
+                return;
+            }
+
+            if (password.length < 6) {
+                registerMsg.textContent = 'Password must be at least 6 characters.';
+                registerMsg.style.display = 'block';
+                return;
+            }
+
+            // Save user to localStorage for persistent accounts
+            const users = JSON.parse(localStorage.getItem('coffeeUsers')) || {};
+            users[username] = { username, gmail, password, role: 'customer' };
+            localStorage.setItem('coffeeUsers', JSON.stringify(users));
+
+            registerSuccessMsg.style.display = 'block';
+            setTimeout(() => {
+                hideCreateAccount();
+                document.getElementById('username').value = username;
+                document.getElementById('password').value = password;
+            }, 1500);
         });
     </script>
 </body>

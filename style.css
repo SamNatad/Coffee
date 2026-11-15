@@ -1866,6 +1866,27 @@ button, input, select, textarea {
     box-shadow: var(--shadow-retro-lg);
 }
 
+.btn-register {
+    padding: 0.85rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--amber);
+    border: var(--border-thick);
+    color: var(--espresso-dark);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: var(--shadow-retro);
+    transition: var(--transition-fast);
+    width: 100%;
+}
+
+.btn-register:hover {
+    background-color: var(--caramel);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-retro-lg);
+}
+
 /* ==========================================================================
    ADMIN DASHBOARD STYLES
    ========================================================================== */
@@ -2188,6 +2209,46 @@ footer p {
     margin-bottom: 1.2rem;
 }
 
+.admin-shortcuts {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.btn-admin-shortcut {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--bg-card);
+    color: var(--espresso);
+    font-weight: 700;
+    font-size: 0.88rem;
+    border: var(--border-espresso);
+    box-shadow: var(--shadow-retro-sm);
+    transition: var(--transition-fast);
+}
+
+.btn-admin-shortcut:hover {
+    background-color: var(--caramel-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-retro);
+}
+
+@media (max-width: 992px) {
+    .admin-shortcuts {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 0.75rem;
+    }
+    .navbar:has(.admin-shortcuts) {
+        flex-wrap: wrap;
+    }
+}
+
 .auth-switch-link {
     display: inline-flex;
     align-items: center;
@@ -2203,3 +2264,229 @@ footer p {
 .auth-switch-link:hover {
     color: var(--caramel-hover);
 }
+/* Inventory & Price Adjustments */
+.inventory-admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.inventory-admin-header h3 { margin-bottom: 0; }
+.btn-add-product {
+    background-color: var(--espresso);
+    color: var(--cream);
+    border: 2px solid var(--espresso);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px var(--espresso);
+}
+.btn-add-product:active { transform: translate(1px,1px); box-shadow: 1px 1px 0 var(--espresso); }
+.inventory-product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+.inventory-product-card {
+    background: var(--bg-card, #fff);
+    border: 2px solid var(--espresso);
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 3px 4px 0px var(--espresso);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.inv-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.inv-product-name { font-family: 'Fredoka', sans-serif; font-weight: 700; color: var(--espresso); margin: 0; }
+.inv-product-cat { font-size: 0.85rem; color: var(--espresso-muted); margin: 0; }
+.inv-badge-row { display: flex; align-items: center; gap: 8px; }
+.badge-instock {
+    background: #98e6d1;
+    color: #1b5e3a;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 999px;
+    border: 1.5px solid #1b5e3a;
+}
+.btn-delete-x {
+    background: #fff5f5;
+    color: #c0392b;
+    border: 1.5px solid #c0392b;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    font-weight: 900;
+    cursor: pointer;
+    line-height: 1;
+}
+.inv-price-row { display: flex; align-items: center; gap: 8px; }
+.inv-price-row label { font-weight: 700; color: var(--espresso); }
+.inv-price-input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1.5px solid var(--espresso);
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+/* ==========================================================================
+   REGISTERED CUSTOMER ACCOUNTS
+   ========================================================================== */
+.customer-accounts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.25rem;
+}
+
+.customer-account-card {
+    background: var(--bg-card);
+    border: var(--border-thick);
+    border-radius: var(--radius-card);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-retro);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: var(--transition-smooth);
+}
+
+.customer-account-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-retro-lg);
+}
+
+.customer-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.customer-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--espresso);
+    margin: 0;
+}
+
+.customer-type-badge {
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.customer-type-badge.vip {
+    background: #fef3c7;
+    color: #b45309;
+    border-color: #f59e0b;
+}
+
+.customer-type-badge.regular {
+    background: #e0e7ff;
+    color: #3730a3;
+    border-color: #6366f1;
+}
+
+.customer-card-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.customer-detail-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--espresso-soft);
+}
+
+.customer-detail-row i {
+    width: 18px;
+    height: 18px;
+    color: var(--caramel);
+    flex-shrink: 0;
+}
+
+.customer-detail-row .detail-label {
+    font-weight: 600;
+    color: var(--espresso-muted);
+    min-width: 80px;
+}
+
+.customer-detail-row .detail-value {
+    color: var(--espresso);
+    font-weight: 500;
+}
+
+.customer-orders-count {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    border-top: 1.5px dashed rgba(56, 28, 9, 0.15);
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--espresso);
+}
+
+.customer-orders-count .orders-label {
+    color: var(--espresso-muted);
+    font-weight: 600;
+}
+
+.customer-orders-count .orders-value {
+    color: var(--caramel);
+    font-size: 1.25rem;
+}
+
+.no-customers-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--espresso-muted);
+}
+
+.no-customers-message i {
+    width: 48px;
+    height: 48px;
+    display: block;
+    margin: 0 auto 1rem;
+    opacity: 0.5;
+}
+
+/* Responsive adjustments for customer accounts */
+@media (max-width: 768px) {
+    .customer-accounts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .customer-account-card {
+        padding: 1.25rem;
+    }
+    
+    .customer-name {
+        font-size: 1.1rem;
+    }
+}
+EOF
+.inventory-admin-section { margin-bottom: 2.5rem !important; }
+#admin-orders { margin-top: 2.5rem; }
